@@ -23,7 +23,6 @@ const getOriginUrl = () => {
 
 const origin = {
   origin: getOriginUrl(),
-  credentials: true,
 };
 
 module.exports = origin;
