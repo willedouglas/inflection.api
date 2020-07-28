@@ -18,6 +18,7 @@ const getOriginUrl = () => {
     originUrl = 'https://adfinance-register-staging.a55.tech';
   }
 
+  console.log(originUrl, process.env.NODE_ENV);
   return originUrl;
 }
 
