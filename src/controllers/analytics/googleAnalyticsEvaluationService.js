@@ -8,6 +8,6 @@ module.exports = {
         goalCompletionsAll: row.metrics[0].values[1],
         goalConversionRateAll: row.metrics[0].values[2],
       },
-    }))
-    : [],
+    })) :
+    [],
 };

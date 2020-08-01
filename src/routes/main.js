@@ -3,24 +3,18 @@
 const express = require('express');
 const router = express.Router();
 
-const googleAdwordsEvaluation = require('../controllers/adwords/googleAdwordsEvaluation');
-const googleAnalyticsEvaluation = require('../controllers/analytics/googleAnalyticsEvaluation');
-const register = require('../controllers/register/register');
+const googleAdwordsEvaluationController = require('../controllers/adwords/googleAdwordsEvaluationController');
+const googleAnalyticsEvaluationController = require('../controllers/analytics/googleAnalyticsEvaluationController');
+const registerController = require('../controllers/register/registerController');
+const wirecardController = require('../controllers/wirecard/wirecardController');
+const sendgridController = require('../controllers/sendgrid/sendgridController');
 
-const wirecard = require('../controllers/wirecard/wirecardController');
-
-router.post('/register', register);
-router.post('/google/campaigns/evaluation', googleAdwordsEvaluation);
-router.post('/google/analytics/evaluation', googleAnalyticsEvaluation);
-
-router.post('/wirecard/create/app', wirecard.create_app);
-router.post('/wirecard/auth', wirecard.auth);
-router.post('/wirecard/order', wirecard.order);
-router.get('/wirecard/orders/all/:accessToken', wirecard.orders_all);
-router.get('/wirecard/order/:orderid/:accessToken', wirecard.order_one);
-router.post('/wirecard/payment', wirecard.payment);
-router.get('/wirecard/saldo/:accessToken', wirecard.saldo);
-router.get('/wirecard/extrato/liquidado/:begin/:end/:accessToken', wirecard.extrato_liquidado);
-router.get('/wirecard/extrato/futuro/:begin/:end/:accessToken', wirecard.extrato_futuro);
+router.post('/register', registerController.register);
+router.post('/google/campaigns/evaluation', googleAdwordsEvaluationController.googleAdwordsEvaluation);
+router.post('/google/analytics/evaluation', googleAnalyticsEvaluationController.googleAnalyticsEvaluation);
+router.get('/wirecard/url', wirecardController.getAuthorizeUrl);
+router.get('/wirecard/auth', wirecardController.getAccessToken);
+router.post('/wirecard/movements', wirecardController.getMovements);
+router.post('/sendgrid/send/confirmation', sendgridController.sendConfirmationMail);
 
 module.exports = router;

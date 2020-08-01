@@ -1,8 +1,12 @@
 'use strict';
 
 const analytics = require('../../resources/googleAnalytics');
-const { handleGoogleErrors } = require('../../helpers/errors');
-const { normalizeEvaluation } = require('./googleAnalyticsEvaluationService');
+const {
+  handleGoogleErrors
+} = require('../../helpers/errors');
+const {
+  normalizeEvaluation
+} = require('./googleAnalyticsEvaluationService');
 
 const googleAnalyticsEvaluation = async (request, response) => {
   try {
@@ -50,4 +54,6 @@ const googleAnalyticsEvaluation = async (request, response) => {
   };
 };
 
-module.exports = googleAnalyticsEvaluation;
+module.exports = {
+  googleAnalyticsEvaluation
+};

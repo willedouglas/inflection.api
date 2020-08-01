@@ -43,4 +43,6 @@ const register = async (request, response) => {
   };
 };
 
-module.exports = register;
+module.exports = {
+  register
+};

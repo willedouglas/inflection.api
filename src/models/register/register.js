@@ -2,7 +2,7 @@
 
 const pool = require('../../config/pool');
 
-const register = async({
+const register = async ({
   firstname,
   lastname,
   email,
@@ -37,7 +37,7 @@ const register = async({
       ($1, $2, $3, $4, $5, $6, $7, $8, $9)
     RETURNING
       id`,
-    [firstname, lastname, email, phone, role, company_name, company_id, website, monthly_gross_revenue]);
+      [firstname, lastname, email, phone, role, company_name, company_id, website, monthly_gross_revenue]);
 
     const accountId = insertAccountQuery.rows[0].id;
 
@@ -49,10 +49,10 @@ const register = async({
         ($1, $2, $3, $4)
       RETURNING
         id`,
-      [accountId, ads.method, ads.customer_account_id, ads.access_token]);
-  
+        [accountId, ads.method, ads.customer_account_id, ads.access_token]);
+
       const advertisingAccountId = insertAdsQuery.rows[0].id;
-  
+
       adsQuery = ads.evaluation.forEach(async campaign => {
         await client.query(`
         INSERT INTO
@@ -79,25 +79,25 @@ const register = async({
           ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
         RETURNING
           id`,
-        [
-          advertisingAccountId,
-          campaign.name,
-          campaign.status,
-          campaign.type,
-          campaign.date,
-          campaign.metrics.clicks,
-          campaign.metrics.impressions,
-          campaign.metrics.ctr,
-          campaign.metrics.cost,
-          campaign.metrics.averageCpc,
-          campaign.metrics.absoluteTopImpressionPercentage,
-          campaign.metrics.topImpressionPercentage,
-          campaign.metrics.conversions,
-          campaign.metrics.viewThroughConversions,
-          campaign.metrics.costPerConversions,
-          campaign.metrics.conversionsRate,
-          campaign.metrics.averageCpm,
-        ]);
+          [
+            advertisingAccountId,
+            campaign.name,
+            campaign.status,
+            campaign.type,
+            campaign.date,
+            campaign.metrics.clicks,
+            campaign.metrics.impressions,
+            campaign.metrics.ctr,
+            campaign.metrics.cost,
+            campaign.metrics.averageCpc,
+            campaign.metrics.absoluteTopImpressionPercentage,
+            campaign.metrics.topImpressionPercentage,
+            campaign.metrics.conversions,
+            campaign.metrics.viewThroughConversions,
+            campaign.metrics.costPerConversions,
+            campaign.metrics.conversionsRate,
+            campaign.metrics.averageCpm,
+          ]);
       });
     }
 
@@ -109,7 +109,7 @@ const register = async({
         ($1, $2, $3, $4)
       RETURNING
         id`,
-      [accountId, analytics.method, analytics.view_id, analytics.access_token]);
+        [accountId, analytics.method, analytics.view_id, analytics.access_token]);
 
       const analyticsAccountId = insertAnalyticsQuery.rows[0].id;
 
@@ -128,14 +128,14 @@ const register = async({
           ($1, $2, $3, $4, $5, $6)
         RETURNING
           id`,
-        [
-          analyticsAccountId,
-          analytic.channelGroup,
-          analytic.date,
-          analytic.metrics.goalValueAll,
-          analytic.metrics.goalCompletionsAll,
-          analytic.metrics.goalConversionRateAll,
-        ]);
+          [
+            analyticsAccountId,
+            analytic.channelGroup,
+            analytic.date,
+            analytic.metrics.goalValueAll,
+            analytic.metrics.goalCompletionsAll,
+            analytic.metrics.goalConversionRateAll,
+          ]);
       });
     }
 

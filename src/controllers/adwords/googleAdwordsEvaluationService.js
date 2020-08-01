@@ -1,6 +1,6 @@
 module.exports = {
   normalizeEvaluation: evaluation =>
-  evaluation.data.results ? evaluation.data.results.map(evaluation => ({
+    evaluation.data.results ? evaluation.data.results.map(evaluation => ({
       name: evaluation.campaign.name,
       status: evaluation.campaign.status,
       type: evaluation.campaign.advertisingChannelType,

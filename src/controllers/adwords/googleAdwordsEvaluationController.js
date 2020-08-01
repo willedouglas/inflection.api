@@ -1,10 +1,20 @@
 'use strict';
 
 const adwords = require('../../resources/googleAdwords');
-const { handleGoogleErrors } = require('../../helpers/errors');
-const { cleanString, removeSpaces } = require('../../helpers/format');
-const { normalizeEvaluation } = require('./googleAdwordsEvaluationService');
-const { startDate, endDate } = require('../../../constants');
+const {
+  handleGoogleErrors
+} = require('../../helpers/errors');
+const {
+  cleanString,
+  removeSpaces
+} = require('../../helpers/format');
+const {
+  normalizeEvaluation
+} = require('./googleAdwordsEvaluationService');
+const {
+  startDate,
+  endDate
+} = require('../../../constants');
 
 const googleAdwordsEvaluation = async (request, response) => {
   try {
@@ -72,4 +82,6 @@ const googleAdwordsEvaluation = async (request, response) => {
   };
 };
 
-module.exports = googleAdwordsEvaluation;
+module.exports = {
+  googleAdwordsEvaluation
+};
