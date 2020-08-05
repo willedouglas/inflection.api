@@ -2,6 +2,7 @@ const api = require('../helpers/api');
 const keys = require('../config/wirecard.keys');
 
 const isProduction = process.env.NODE_ENV === 'production';
+const baseURL = `${ isProduction ? 'https://moip.com.br/v2' : 'https://sandbox.moip.com.br/v2' }`;
 
 const moip = require('moip-sdk-node').default({
   accessToken: keys.accessToken,
@@ -11,7 +12,7 @@ const moip = require('moip-sdk-node').default({
 const apiHelper = ({
   access_token
 }) => api({
-  baseURL: `${ isProduction ? 'https://moip.com.br/v2' : 'https://sandbox.moip.com.br/v2' }`,
+  baseURL,
   headers: {
     Accept: 'application/json;version=2.1',
     Authorization: `OAuth ${access_token}`
