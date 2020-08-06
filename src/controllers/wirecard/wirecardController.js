@@ -1,4 +1,6 @@
 const wirecard = require('../../resources/wirecard');
+const { begin, end } = require('../../../constants');
+const { normalizeStatements } = require('./wirecardService');
 
 const getAuthorizeUrl = async (request, response) => {
   try {
@@ -18,7 +20,7 @@ const getAuthorizeUrl = async (request, response) => {
   }
 };
 
-const getAccessToken = async (request, response) => {
+const generateToken = async (request, response) => {
   try {
     const {
       code
@@ -31,13 +33,13 @@ const getAccessToken = async (request, response) => {
       });
     }
 
+    const { body } = await wirecard.generateToken({ code });
+
     const {
       access_token,
       refresh_token,
       expires_in,
-    } = await wirecard.getAccessToken({
-      code
-    });
+    } = JSON.parse(body);
 
     return response.status(200).json({
       status: 'success',
@@ -55,31 +57,16 @@ const getAccessToken = async (request, response) => {
   }
 };
 
-const getMovements = async (request, response) => {
+const getStatements = async (request, response) => {
   try {
-    const {
-      access_token
-    } = request.body;
-
-    if (!access_token) {
-      return response.status(400).json({
-        status: 'error',
-        description: 'Token de acesso não informado.',
-      });
-    }
-
-    /* BLOCK STILL DEVELOPMENT START */
-
-    const entries = await wirecard.getStatements({
-      access_token,
-      date: 'YYYY-MM-DD', // TO DO
+    const { data: statements } = await wirecard.getStatements({
+      begin,
+      end,
     });
-
-    /* BLOCK STILL DEVELOPMENT END */
 
     return response.status(200).json({
       status: 'success',
-      data: entries,
+      data: normalizeStatements(statements),
     });
 
   } catch (e) {
@@ -92,6 +79,6 @@ const getMovements = async (request, response) => {
 
 module.exports = {
   getAuthorizeUrl,
-  getAccessToken,
-  getMovements,
+  generateToken,
+  getStatements,
 }

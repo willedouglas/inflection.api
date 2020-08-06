@@ -14,6 +14,7 @@ const register = async ({
   monthly_gross_revenue,
   ads,
   analytics,
+  payment,
 }) => {
   const client = await pool.connect();
 

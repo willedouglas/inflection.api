@@ -9,13 +9,10 @@ const moip = require('moip-sdk-node').default({
   production: isProduction
 });
 
-const apiHelper = ({
-  access_token
-}) => api({
+const apiHelper = api({
   baseURL,
   headers: {
-    Accept: 'application/json;version=2.1',
-    Authorization: `OAuth ${access_token}`
+    Authorization: `OAuth ${keys.accessToken}`
   },
 });
 
@@ -35,9 +32,7 @@ module.exports = {
     code,
   }),
   getStatements: ({
-    access_token,
-    date,
-  }) => apiHelper({
-    access_token
-  }).get(`/statements/details?date=${date}`),
+    begin,
+    end,
+  }) => apiHelper.get(`/statements?begin=${begin}&end=${end}`),
 };

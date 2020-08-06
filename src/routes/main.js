@@ -13,8 +13,8 @@ router.post('/register', registerController.register);
 router.post('/google/campaigns/evaluation', googleAdwordsEvaluationController.googleAdwordsEvaluation);
 router.post('/google/analytics/evaluation', googleAnalyticsEvaluationController.googleAnalyticsEvaluation);
 router.get('/wirecard/url', wirecardController.getAuthorizeUrl);
-router.get('/wirecard/auth', wirecardController.getAccessToken);
-router.post('/wirecard/movements', wirecardController.getMovements);
+router.post('/wirecard/auth', wirecardController.generateToken);
+router.post('/wirecard/statements', wirecardController.getStatements);
 router.post('/sendgrid/send/confirmation', sendgridController.sendConfirmationMail);
 
 module.exports = router;
