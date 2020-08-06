@@ -21,15 +21,7 @@ const register = async ({
   try {
     await client.query('BEGIN');
 
-    let adsQuery, analyticsQuery;
-
-    const isAlreadyUserQuery = await client.query(`SELECT id FROM adfinance.account WHERE email = $1`, [email]);
-
-    const hasUser = isAlreadyUserQuery.rows.length > 0;
-
-    if (hasUser) {
-      throw new Error('E-mail já cadastrado.');
-    }
+    let adsQuery, analyticsQuery, paymentsQuery;
 
     const insertAccountQuery = await client.query(`
     INSERT INTO
@@ -59,6 +51,7 @@ const register = async ({
         INSERT INTO
           adfinance.campaign (
             advertising_account_id,
+            campaign_id,
             name,
             status,
             type,
@@ -77,11 +70,10 @@ const register = async ({
             average_cpm
           )
         VALUES
-          ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
-        RETURNING
-          id`,
+          ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)`,
           [
             advertisingAccountId,
+            campaign.id,
             campaign.name,
             campaign.status,
             campaign.type,
@@ -126,9 +118,7 @@ const register = async ({
             goal_conversion_rate_all
           )
         VALUES
-          ($1, $2, $3, $4, $5, $6)
-        RETURNING
-          id`,
+          ($1, $2, $3, $4, $5, $6)`,
           [
             analyticsAccountId,
             analytic.channelGroup,
@@ -140,7 +130,43 @@ const register = async ({
       });
     }
 
-    await Promise.all([adsQuery, analyticsQuery]);
+    if (payment) {
+      const insertPaymentQuery = await client.query(`
+      INSERT INTO
+        adfinance.payment_account (account_id, platform, access_token)
+      VALUES
+        ($1, $2, $3)
+      RETURNING
+        id`,
+        [accountId, payment.method, payment.access_token]);
+
+      const paymentsAccountId = insertPaymentQuery.rows[0].id;
+
+      if (payment.evaluation) {
+        paymentsQuery = payment.evaluation.forEach(async payment => {
+          await client.query(`
+          INSERT INTO
+            adfinance.payment_grouped (
+              payment_account_id,
+              amount,
+              description,
+              type,
+              date          
+            )
+          VALUES
+            ($1, $2, $3, $4, $5)`,
+            [
+              paymentsAccountId,
+              payment.amount,
+              payment.description,
+              payment.type,
+              payment.date,
+            ]);
+        });
+      }
+    }
+
+    await Promise.all([adsQuery, analyticsQuery, paymentsQuery]);
 
     await client.query('COMMIT');
   } catch (e) {
