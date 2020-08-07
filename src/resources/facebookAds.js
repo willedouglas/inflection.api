@@ -31,10 +31,12 @@ const fields = [
   'frequency',
 ];
 
+/* levels: account, campaign, adset, ad */
+
 const params = {
   'time_range' : {'since':'2017-01-01','until':'2021-01-01'},
   'filtering' : [],
-  'level' : 'campaign',
+  'level' : 'ad',
   'breakdowns' : [],
 };
 
