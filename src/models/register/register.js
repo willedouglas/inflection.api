@@ -14,7 +14,7 @@ const register = async ({
   monthly_gross_revenue,
   ads,
   analytics,
-  payment,
+  payments,
 }) => {
   const client = await pool.connect();
 
@@ -37,12 +37,19 @@ const register = async ({
     if (ads) {
       const insertAdsQuery = await client.query(`
       INSERT INTO
-        adfinance.advertising_account (account_id, platform, customer_account_id, access_token)
+        adfinance.advertising_account (account_id, method, name, email, customer_account_id, access_token)
       VALUES
-        ($1, $2, $3, $4)
+        ($1, $2, $3, $4, $5, $6)
       RETURNING
         id`,
-        [accountId, ads.method, ads.customer_account_id, ads.access_token]);
+        [
+          accountId,
+          ads.method,
+          ads.name,
+          ads.email,
+          ads.customer_account_id,
+          ads.access_token,
+        ]);
 
       const advertisingAccountId = insertAdsQuery.rows[0].id;
 
@@ -97,12 +104,19 @@ const register = async ({
     if (analytics) {
       const insertAnalyticsQuery = await client.query(`
       INSERT INTO
-        adfinance.analytic_account (account_id, platform, view_id, access_token)
+        adfinance.analytic_account (account_id, method, name, email, view_id, access_token)
       VALUES
-        ($1, $2, $3, $4)
+        ($1, $2, $3, $4, $5, $6)
       RETURNING
         id`,
-        [accountId, analytics.method, analytics.view_id, analytics.access_token]);
+        [
+          accountId,
+          analytics.method,
+          analytics.name,
+          analytics.email,
+          analytics.view_id,
+          analytics.access_token,
+        ]);
 
       const analyticsAccountId = insertAnalyticsQuery.rows[0].id;
 
@@ -130,20 +144,26 @@ const register = async ({
       });
     }
 
-    if (payment) {
+    if (payments) {
       const insertPaymentQuery = await client.query(`
       INSERT INTO
-        adfinance.payment_account (account_id, platform, access_token)
+        adfinance.payment_account (account_id, method, credit, debit, access_token)
       VALUES
-        ($1, $2, $3)
+        ($1, $2, $3, $4, $5)
       RETURNING
         id`,
-        [accountId, payment.method, payment.access_token]);
+        [
+          accountId,
+          payments.method,
+          payments.evaluation.summary.credit,
+          payments.evaluation.summary.debit,
+          payments.access_token,
+        ]);
 
       const paymentsAccountId = insertPaymentQuery.rows[0].id;
 
-      if (payment.evaluation) {
-        paymentsQuery = payment.evaluation.forEach(async payment => {
+      if (payments.evaluation) {
+        paymentsQuery = payments.evaluation.detail.forEach(async payment => {
           await client.query(`
           INSERT INTO
             adfinance.payment_grouped (

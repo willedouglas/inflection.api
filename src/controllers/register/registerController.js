@@ -16,7 +16,7 @@ const register = async (request, response) => {
       monthly_gross_revenue,
       ads,
       analytics,
-      payment,
+      payments,
     } = request.body;
 
     await registerAccount({
@@ -31,7 +31,7 @@ const register = async (request, response) => {
       monthly_gross_revenue,
       ads,
       analytics,
-      payment,
+      payments,
     });
 
     return response.status(201).json({

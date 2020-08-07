@@ -73,7 +73,7 @@ const googleAdwordsEvaluation = async (request, response) => {
       data: normalizeEvaluation(evaluation),
     });
   } catch (e) {
-    const errorMessage = (e.response && e.response.data[0] && e.response.data[0].error && e.response.data[0].error.status) || 'DEFAULT';
+    const errorMessage = (e.response && e.response.data && e.response.data.error && e.response.data.error.status) || 'DEFAULT';
 
     return response.status(500).json({
       status: 'error',

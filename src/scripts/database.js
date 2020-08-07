@@ -16,41 +16,45 @@ create table adfinance.account(
 create table adfinance.advertising_account(
   id serial primary key,
   account_id integer references adfinance.account (id) not null,
-  platform varchar (50) not null,
-  customer_account_id varchar (50) not null,
-  access_token varchar (255) not null,
+  method varchar (50) not null,
+  name  varchar (255),
+  email varchar (255),
+  customer_account_id varchar (50),
+  access_token varchar (255),
   created_on timestamp with time zone default current_timestamp
 );
 
 create table adfinance.campaign(
   id serial primary key,
-  campaign_id integer not null,
+  campaign_id varchar (30) not null,
   advertising_account_id integer references adfinance.advertising_account (id) not null,
   name varchar (255) not null,
-  status varchar (20) not null,
-  type varchar (55) not null,
+  status varchar (60) not null,
+  type varchar (60) not null,
   date date not null,
-  clicks integer default 0,
-  impressions integer default 0,
-  ctr varchar (7) default '0%',
-  cost integer default 0,
-  average_cpc integer default 0,
-  absolute_top_impression_percentage decimal (11,2) default 0,
-  top_impression_percentage decimal (11,2) default 0,
-  conversions decimal (11,2) default 0,
-  view_through_conversions integer default 0,
-  cost_per_conversion integer default 0,
-  conversion_rate varchar (7) default '0%',
-  average_cpm integer default 0,
+  clicks varchar (50),
+  impressions varchar (50),
+  ctr varchar (50),
+  cost varchar (50),
+  average_cpc varchar (50),
+  absolute_top_impression_percentage varchar (50),
+  top_impression_percentage varchar (50),
+  conversions varchar (50),
+  view_through_conversions varchar (50),
+  cost_per_conversion varchar (50),
+  conversion_rate varchar (50),
+  average_cpm varchar (50),
   created_on timestamp with time zone default current_timestamp
 );
 
 create table adfinance.analytic_account(
   id serial primary key,
   account_id integer references adfinance.account (id) not null,
-  platform varchar (50) not null,
-  view_id varchar (50) not null,
-  access_token varchar (255) not null,
+  method varchar (50) not null,
+  name  varchar (255),
+  email varchar (255),
+  view_id varchar (50),
+  access_token varchar (255),
   created_on timestamp with time zone default current_timestamp
 );
 
@@ -59,16 +63,19 @@ create table adfinance.analytic(
   analytic_account_id integer references adfinance.analytic_account (id) not null,
   channel_group varchar (55) not null,
   date date not null,
-  goal_value_all decimal (11,2) default 0,
-  goal_completions_all integer default 0,
-  goal_conversion_rate_all varchar (7) default '0%'
+  goal_value_all varchar (50),
+  goal_completions_all varchar (50),
+  goal_conversion_rate_all varchar (50),
+  created_on timestamp with time zone default current_timestamp
 );
 
 create table adfinance.payment_account(
   id serial primary key,
   account_id integer references adfinance.account (id) not null,
-  platform varchar (50) not null,
-  access_token varchar (255) not null,
+  method varchar (50) not null,
+  credit decimal (11,2),
+  debit decimal (11,2),
+  access_token varchar (255),
   created_on timestamp with time zone default current_timestamp
 );
 
