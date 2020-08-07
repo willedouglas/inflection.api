@@ -1,7 +1,7 @@
 const api = require('../helpers/api');
 const keys = require('../config/wirecard.keys');
 
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.ENV === 'production';
 const baseURL = `${ isProduction ? 'https://moip.com.br/v2' : 'https://sandbox.moip.com.br/v2' }`;
 
 const moip = require('moip-sdk-node').default({

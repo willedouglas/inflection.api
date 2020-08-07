@@ -1,5 +1,5 @@
-const isStaging = process.env.NODE_ENV === 'staging';
-const isProduction = process.env.NODE_ENV === 'production';
+const isStaging = process.env.ENV === 'staging';
+const isProduction = process.env.ENV === 'production';
 
 module.exports = {
   client_id: isProduction ? '' : isStaging ? 'APP-K3ME7DC6BMDC' : 'APP-SVS317VVB2IC',
