@@ -6,7 +6,6 @@ const api = options => axios.create({
     'Content-Type': 'application/json',
     ...options.headers,
   },
-  withCredentials: true,
 });
 
 module.exports = api;
