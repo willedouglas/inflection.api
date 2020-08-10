@@ -1,7 +1,6 @@
 'use strict';
 
 const express = require('express');
-const origin = require('./src/config/origin');
 const routes = require('./src/routes/index');
 const cors = require('cors');
 
