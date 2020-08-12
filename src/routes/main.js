@@ -17,7 +17,7 @@ router.get('/wirecard/url', wirecardController.getAuthorizeUrl);
 router.post('/wirecard/auth', wirecardController.generateToken);
 router.post('/wirecard/statements', wirecardController.getStatements);
 router.post('/sendgrid/send/confirmation', sendgridController.sendConfirmationMail);
-router.get('/facebook/ads/user', facebookEvaluationController.getUserAds);
-router.get('/facebook/ads/evaluation', facebookEvaluationController.getFacebookInsights);
+router.get('/facebook/campaigns/user', facebookEvaluationController.getUserAds);
+router.post('/facebook/campaigns/evaluation', facebookEvaluationController.getFacebookInsights);
 
 module.exports = router;

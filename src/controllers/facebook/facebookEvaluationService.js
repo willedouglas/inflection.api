@@ -1,23 +1,28 @@
+const getToday = () => {
+  const today = new Date();
+  return today.toISOString().substring(0, 10);
+}
+
 module.exports = {
-  normalizeEvaluation: evaluation =>
-    evaluation ? evaluation.map(evaluation => ({
-      name: evaluation.campaign_name,
-      status: 'none',
-      type: 'none',
-      date: '0000-00-00',
+  normalizeInsights: insight =>
+    insight ? insight.map(insight => ({
+      name: insight.campaign_name,
+      status: 'N/A',
+      type: 'N/A',
+      date: getToday(),
       metrics: {
-        clicks: evaluation.clicks,
-        impressions: evaluation.impressions,
-        ctr: evaluation.ctr,
-        cost: parseFloat(evaluation.cpc) + parseFloat(evaluation.cpm),
-        averageCpc: evaluation.cpc,
+        clicks: insight.clicks,
+        impressions: insight.impressions,
+        ctr: insight.ctr,
+        cost: parseFloat(insight.cpc) + parseFloat(insight.cpm),
+        averageCpc: insight.cpc,
         absoluteTopImpressionPercentage: 0,
         topImpressionPercentage: 0,
-        conversions: evaluation.conversions,
+        conversions: insight.conversions,
         viewThroughConversions: 0,
-        costPerConversions: evaluation.cost_per_conversion,
-        conversionsRate: evaluation.conversion_values,
-        averageCpm: evaluation.cpm,
+        costPerConversions: insight.cost_per_conversion,
+        conversionsRate: insight.conversion_values,
+        averageCpm: insight.cpm,
       },
     })) : [],
 };
