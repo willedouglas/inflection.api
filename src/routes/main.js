@@ -20,6 +20,7 @@ router.get('/wirecard/url', wirecardController.getAuthorizeUrl);
 router.post('/wirecard/auth', wirecardController.generateToken);
 router.post('/wirecard/statements', wirecardController.getStatements);
 router.post('/sendgrid/send/confirmation', sendgridController.sendConfirmationMail);
+router.post('/sendgrid/send/notification', sendgridController.sendNotificationMail);
 router.get('/facebook/campaigns/user', facebookEvaluationController.getUserAds);
 router.post('/facebook/campaigns/evaluation', facebookEvaluationController.getFacebookInsights);
 router.get('/flow/requests', requestsController.getRequests);
