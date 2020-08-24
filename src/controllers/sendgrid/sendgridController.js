@@ -53,7 +53,7 @@ const sendConfirmationMail = async (request, response) => {
   };
 };
 
-const sendA55notify = async (request, response) => {
+const sendNotificationMail = async (request, response) => {
   try {
     const {
       name,
@@ -99,5 +99,5 @@ const sendA55notify = async (request, response) => {
 
 module.exports = {
   sendConfirmationMail,
-  sendA55notify,
+  sendNotificationMail,
 };
