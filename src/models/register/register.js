@@ -155,8 +155,8 @@ const register = async ({
         [
           accountId,
           payments.method,
-          payments.evaluation.summary.credit,
-          payments.evaluation.summary.debit,
+          payments.evaluation ? payments.evaluation.summary.credit : 0,
+          payments.evaluation ? payments.evaluation.summary.debit : 0,
           payments.access_token,
         ]);
 
