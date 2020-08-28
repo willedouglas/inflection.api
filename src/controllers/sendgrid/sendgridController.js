@@ -97,7 +97,47 @@ const sendNotificationMail = async (request, response) => {
   };
 };
 
+const sendAbandonmentMail = async (request, response) => {
+  try {
+    const {
+      name,
+      email,
+    } = request.body;
+
+    const timestamp_30min = parseInt(new Date().getTime() + 30*60000);
+
+    const body = {
+      from: { email: 'noreply@a55.tech', name: 'A55 | Adfinance' },
+      personalizations: [
+        {
+          to: [ { email } ],
+          send_each_at: [
+            timestamp_30min,
+          ],
+          dynamic_template_data: {
+            name,
+          },
+        },
+      ],
+      template_id: 'd-61929435d77b403eb2ccfa93fad57cef',
+    };
+
+    await sendgrid.send(body);
+
+    return response.status(200).json({
+      status: 'success',
+      description: 'E-mail enviado com sucesso!',
+    });
+  } catch (e) {
+    return response.status(500).json({
+      status: 'error',
+      description: 'Erro ao enviar o seu e-mail, tente novamente mais tarde.',
+    });
+  };
+};
+
 module.exports = {
   sendConfirmationMail,
   sendNotificationMail,
+  sendAbandonmentMail,
 };
