@@ -1,10 +1,7 @@
 'use strict';
 
 const sendgrid = require('../../resources/sendgrid');
-
-function timeout(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+const THIRTY_MINUTES = 1800000;
 
 const sendConfirmationMail = async (request, response) => {
   try {
@@ -121,12 +118,9 @@ const sendAbandonmentMail = async (request, response) => {
       template_id: 'd-61929435d77b403eb2ccfa93fad57cef',
     };
 
-    /* Send 30 minutes after */
-    setTimeout(() => {
+    await setTimeout(() => {
       sendgrid.send(body);
-    }, 1800000);
-    
-    await timeout(1000);
+    }, THIRTY_MINUTES);
 
     return response.status(200).json({
       status: 'success',
