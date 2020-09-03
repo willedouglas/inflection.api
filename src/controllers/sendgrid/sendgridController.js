@@ -1,7 +1,6 @@
 'use strict';
 
 const sendgrid = require('../../resources/sendgrid');
-const THIRTY_MINUTES = 1800000;
 
 const sendConfirmationMail = async (request, response) => {
   try {
@@ -105,11 +104,14 @@ const sendAbandonmentMail = async (request, response) => {
       email,
     } = request.body;
 
+    const THIRTY_MINUTES_AFTER = Math.round((new Date().getTime() + 30*60000) / 1000);
+
     const body = {
       from: { email: 'noreply@a55.tech', name: 'A55 | Adfinance' },
       personalizations: [
         {
           to: [ { email } ],
+          send_at: THIRTY_MINUTES_AFTER,
           dynamic_template_data: {
             name,
           },
@@ -118,9 +120,7 @@ const sendAbandonmentMail = async (request, response) => {
       template_id: 'd-61929435d77b403eb2ccfa93fad57cef',
     };
 
-    await setTimeout(() => {
-      sendgrid.send(body);
-    }, THIRTY_MINUTES);
+    sendgrid.send(body);
 
     return response.status(200).json({
       status: 'success',
