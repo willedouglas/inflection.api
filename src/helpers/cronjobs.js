@@ -38,8 +38,8 @@ const checkIncompleteRecords = async () => {
                   from: { email: 'noreply@a55.tech', name: 'Plataforma a55' },
                   personalizations: [
                     {
-                      to: [{ email: "corintho@a55.tech" }],
-                      subject: "Recuperação AdFinance"
+                      to: [{ email: "cadastro.adfinance@a55.tech" }],
+                      subject: "[AdFinance] Trilha de Recuperação"
                     },
                   ],
                   content: [
