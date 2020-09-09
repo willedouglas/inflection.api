@@ -34,6 +34,8 @@ const register = async ({
 
     const accountId = insertAccountQuery.rows[0].id;
 
+    await client.query(`DELETE FROM adfinance.account_temp WHERE email = '${email}'`);
+
     if (ads) {
       const insertAdsQuery = await client.query(`
       INSERT INTO
