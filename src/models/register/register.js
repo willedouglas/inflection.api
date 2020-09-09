@@ -197,4 +197,36 @@ const register = async ({
   }
 };
 
-module.exports = register;
+const registerTemporaryAccount = async ({
+  firstname,
+  lastname,
+  email,
+  phone,
+}) => {
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    const insertAccountQuery = await client.query(`
+    INSERT INTO
+      adfinance.account_temp (first_name, last_name, email, phone)
+    VALUES
+      ($1, $2, $3, $4)
+    RETURNING
+      id`,
+      [firstname, lastname, email, phone]);
+
+    await client.query('COMMIT');
+  } catch (e) {
+    await client.query('ROLLBACK');
+    throw e;
+  } finally {
+    client.release();
+  }
+};
+
+module.exports = {
+  register,
+  registerTemporaryAccount,
+};

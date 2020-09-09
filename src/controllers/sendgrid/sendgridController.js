@@ -104,14 +104,14 @@ const sendAbandonmentMail = async (request, response) => {
       email,
     } = request.body;
 
-    const ONE_MINUTE_AFTER = Math.round((new Date().getTime() + 60000) / 1000);
+    const THIRTY_MINUTES_AFTER = Math.round((new Date().getTime() + 30*60000) / 1000);
 
     const body = {
       from: { email: 'noreply@a55.tech', name: 'A55 | Adfinance' },
       personalizations: [
         {
           to: [ { email } ],
-          send_at: ONE_MINUTE_AFTER,
+          send_at: THIRTY_MINUTES_AFTER,
           dynamic_template_data: {
             name,
           },
