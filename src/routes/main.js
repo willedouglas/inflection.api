@@ -14,6 +14,7 @@ const leadsController = require('../controllers/flow/leadsController');
 
 router.post('/register', registerController.register);
 router.post('/leads', leadsController.createLead);
+router.post('/register/temporary', registerController.registerTemporary);
 router.post('/google/campaigns/evaluation', googleAdwordsEvaluationController.googleAdwordsEvaluation);
 router.post('/google/analytics/evaluation', googleAnalyticsEvaluationController.googleAnalyticsEvaluation);
 router.get('/wirecard/url', wirecardController.getAuthorizeUrl);
