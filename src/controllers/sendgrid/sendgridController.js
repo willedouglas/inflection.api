@@ -104,16 +104,14 @@ const sendAbandonmentMail = async (request, response) => {
       email,
     } = request.body;
 
-    const timestamp_30min = parseInt(new Date().getTime() + 30*60000);
+    const THIRTY_MINUTES_AFTER = Math.round((new Date().getTime() + 30*60000) / 1000);
 
     const body = {
       from: { email: 'noreply@a55.tech', name: 'A55 | Adfinance' },
       personalizations: [
         {
           to: [ { email } ],
-          send_each_at: [
-            timestamp_30min,
-          ],
+          send_at: THIRTY_MINUTES_AFTER,
           dynamic_template_data: {
             name,
           },
@@ -122,7 +120,7 @@ const sendAbandonmentMail = async (request, response) => {
       template_id: 'd-61929435d77b403eb2ccfa93fad57cef',
     };
 
-    await sendgrid.send(body);
+    sendgrid.send(body);
 
     return response.status(200).json({
       status: 'success',
