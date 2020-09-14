@@ -210,14 +210,13 @@ const registerTemporaryAccount = async ({
   try {
     await client.query('BEGIN');
 
-    const insertAccountQuery = await client.query(`
-    INSERT INTO
-      adfinance.account_temp (first_name, last_name, email, phone)
-    VALUES
-      ($1, $2, $3, $4)
-    RETURNING
-      id`,
-      [firstname, lastname, email, phone]);
+    await client.query(`
+      INSERT INTO
+        adfinance.account_temp (first_name, last_name, email, phone)
+      VALUES
+        ($1, $2, $3, $4)`,
+      [firstname, lastname, email, phone]
+    );
 
     await client.query('COMMIT');
   } catch (e) {
