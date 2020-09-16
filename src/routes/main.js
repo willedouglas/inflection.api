@@ -18,8 +18,11 @@ router.post('/register/temporary', registerController.registerTemporary);
 router.post('/google/campaigns/evaluation', googleAdwordsEvaluationController.googleAdwordsEvaluation);
 router.post('/google/analytics/evaluation', googleAnalyticsEvaluationController.googleAnalyticsEvaluation);
 router.get('/wirecard/url', wirecardController.getAuthorizeUrl);
+router.get('/wirecard/balances', wirecardController.getBalances);
 router.post('/wirecard/auth', wirecardController.generateToken);
 router.post('/wirecard/statements', wirecardController.getStatements);
+router.post('/wirecard/transfer/wirecard', wirecardController.transferToWirecardAccount);
+/* router.post('/wirecard/transfer/bank', wirecardController.transferToBankAccount); */
 router.post('/sendgrid/send/confirmation', sendgridController.sendConfirmationMail);
 router.post('/sendgrid/send/notification', sendgridController.sendNotificationMail);
 router.post('/sendgrid/send/abandonment', sendgridController.sendAbandonmentMail);
