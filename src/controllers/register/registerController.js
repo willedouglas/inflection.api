@@ -6,6 +6,7 @@ const sendgrid = require('../../resources/sendgrid');
 const register = async (request, response) => {
   try {
     const {
+      how_meet_us,
       firstname,
       lastname,
       email,
@@ -15,12 +16,18 @@ const register = async (request, response) => {
       company_id,
       website,
       monthly_gross_revenue,
+      corporate_name,
+      company_category,
+      company_zip,
+      company_address_number,
+      average_monthly_ads_investment,
       ads,
       analytics,
       payments,
     } = request.body;
 
     await registerModel.register({
+      how_meet_us,
       firstname,
       lastname,
       email,
@@ -30,6 +37,11 @@ const register = async (request, response) => {
       company_id,
       website,
       monthly_gross_revenue,
+      corporate_name,
+      company_category,
+      company_zip,
+      company_address_number,
+      average_monthly_ads_investment,
       ads,
       analytics,
       payments,

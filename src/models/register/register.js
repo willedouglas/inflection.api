@@ -3,6 +3,7 @@
 const pool = require('../../config/pool');
 
 const register = async ({
+  how_meet_us,
   firstname,
   lastname,
   email,
@@ -12,6 +13,11 @@ const register = async ({
   company_id,
   website,
   monthly_gross_revenue,
+  corporate_name,
+  company_category,
+  company_zip,
+  company_address_number,
+  average_monthly_ads_investment,
   ads,
   analytics,
   payments,
@@ -25,12 +31,44 @@ const register = async ({
 
     const insertAccountQuery = await client.query(`
     INSERT INTO
-      adfinance.account (first_name, last_name, email, phone, role, company_name, company_id, website, monthly_gross_revenue)
+      adfinance.account (
+        first_name,
+        last_name,
+        email,
+        phone,
+        role,
+        company_name,
+        company_id,
+        website,
+        monthly_gross_revenue,
+        corporate_name,
+        company_category,
+        company_zip,
+        company_address_number,
+        average_monthly_ads_investment,
+        how_meet_us
+      )
     VALUES
-      ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
     RETURNING
       id`,
-      [firstname, lastname, email, phone, role, company_name, company_id, website, monthly_gross_revenue]);
+      [
+        firstname,
+        lastname,
+        email,
+        phone,
+        role,
+        company_name,
+        company_id,
+        website,
+        monthly_gross_revenue,
+        corporate_name,
+        company_category,
+        company_zip,
+        company_address_number,
+        average_monthly_ads_investment,
+        how_meet_us,
+      ]);
 
     const accountId = insertAccountQuery.rows[0].id;
 

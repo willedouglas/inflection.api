@@ -8,5 +8,13 @@ const apiHelper = api({
 });
 
 module.exports = {
-  send: body => apiHelper.post('/mail/send', body),
+  send: body => {
+    const isProduction = process.env.ENV === 'production';
+
+    if (isProduction) {
+      return apiHelper.post('/mail/send', body);
+    }
+
+    return Promise.resolve();
+  },
 };
