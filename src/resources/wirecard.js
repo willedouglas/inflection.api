@@ -16,6 +16,16 @@ const apiHelper = api({
   },
 });
 
+const apiHelperSplitBalance = ({
+  access_token
+}) => api({
+  baseURL,
+  headers: {
+    Authorization: `OAuth ${access_token}`,
+    Accept: `application/json;version=2.1`
+  },
+});
+
 module.exports = {
   getAuthorizeUrl: () => moip.connect.getAuthorizeUrl({
     clientId: keys.client_id,
@@ -35,4 +45,11 @@ module.exports = {
     begin,
     end,
   }) => apiHelper.get(`/statements?begin=${begin}&end=${end}`),
+  getBalance: ({
+    access_token,
+  }) => apiHelperSplitBalance({access_token}).get(`/balances`),
+  transferToWirecardAccount: ({
+    access_token,
+    body,
+  }) => apiHelperSplitBalance({access_token}).post(`/transfers`, body),
 };
