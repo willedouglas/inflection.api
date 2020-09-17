@@ -13,9 +13,13 @@ const whitelist = [
   'https://plataforma-staging.a55.tech',
 ];
 
+const isDev = () => {
+  return process.env.ENV === "development"
+}
+
 const origin = {
   origin: (origin, callback) => {
-    if (whitelist.indexOf(origin) !== -1) {
+    if (whitelist.indexOf(origin) !== -1 || isDev()) {
       callback(null, true)
     } else {
       callback(new Error('Not allowed by CORS.'))
