@@ -134,8 +134,46 @@ const sendAbandonmentMail = async (request, response) => {
   };
 };
 
+const sendDataMissingMail = async (request, response) => {
+  try {
+    const {
+      name,
+      email,
+    } = request.body;
+
+    const TEN_MINUTES_AFTER = Math.round((new Date().getTime() + 10*60000) / 1000);
+
+    const body = {
+      from: { email: 'noreply@a55.tech', name: 'A55 | Adfinance' },
+      personalizations: [
+        {
+          to: [ { email } ],
+          send_at: TEN_MINUTES_AFTER,
+          dynamic_template_data: {
+            name,
+          },
+        },
+      ],
+      template_id: 'd-c88c64b7b74a48d5baf4d9f729f458ac',
+    };
+
+    sendgrid.send(body);
+
+    return response.status(200).json({
+      status: 'success',
+      description: 'E-mail enviado com sucesso!',
+    });
+  } catch (e) {
+    return response.status(500).json({
+      status: 'error',
+      description: 'Erro ao enviar o seu e-mail, tente novamente mais tarde.',
+    });
+  };
+};
+
 module.exports = {
   sendConfirmationMail,
   sendNotificationMail,
   sendAbandonmentMail,
+  sendDataMissingMail,
 };
