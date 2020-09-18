@@ -2,6 +2,27 @@
 
 const sendgrid = require('../../resources/sendgrid');
 
+const sendConfirmationMail = async (request, response) => {
+  try {
+    const {
+      name,
+      to
+    } = request.body;
+
+    await Promise.resolve();
+
+    return response.status(200).json({
+      status: 'success',
+      description: 'E-mail enviado com sucesso!',
+    });
+  } catch (e) {
+    return response.status(500).json({
+      status: 'error',
+      description: 'Erro ao enviar o seu e-mail, tente novamente mais tarde.',
+    });
+  };
+};
+
 const sendNotificationMail = async (request, response) => {
   try {
     const {
@@ -121,6 +142,7 @@ const sendDataMissingMail = async (request, response) => {
 };
 
 module.exports = {
+  sendConfirmationMail,
   sendNotificationMail,
   sendAbandonmentMail,
   sendDataMissingMail,
