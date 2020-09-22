@@ -27,6 +27,7 @@ router.post('/sendgrid/send/confirmation', sendgridController.sendConfirmationMa
 router.post('/sendgrid/send/notification', sendgridController.sendNotificationMail);
 router.post('/sendgrid/send/abandonment', sendgridController.sendAbandonmentMail);
 router.post('/sendgrid/send/datamissing', sendgridController.sendDataMissingMail);
+router.post('/sendgrid/send/underanalysis', sendgridController.sendUnderAnalysisMail);
 router.get('/facebook/campaigns/user', facebookEvaluationController.getUserAds);
 router.post('/facebook/campaigns/evaluation', facebookEvaluationController.getFacebookInsights);
 router.get('/flow/requests', requestsController.getRequests);
