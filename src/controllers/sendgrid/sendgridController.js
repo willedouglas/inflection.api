@@ -77,7 +77,7 @@ const sendAbandonmentMail = async (request, response) => {
     const THIRTY_MINUTES_AFTER = Math.round((new Date().getTime() + 30*60000) / 1000);
 
     const body = {
-      from: { email: 'noreply@a55.tech', name: 'A55 | Adfinance' },
+      from: { email: 'noreply@a55.tech', name: 'Plataforma A55' },
       personalizations: [
         {
           to: [ { email } ],
@@ -114,7 +114,7 @@ const sendDataMissingMail = async (request, response) => {
     const TEN_MINUTES_AFTER = Math.round((new Date().getTime() + 10*60000) / 1000);
 
     const body = {
-      from: { email: 'noreply@a55.tech', name: 'A55 | Adfinance' },
+      from: { email: 'noreply@a55.tech', name: 'Plataforma A55' },
       personalizations: [
         {
           to: [ { email } ],
@@ -141,9 +141,44 @@ const sendDataMissingMail = async (request, response) => {
   };
 };
 
+const sendUnderAnalysisMail = async (request, response) => {
+  try {
+    const {
+      name,
+      email,
+    } = request.body;
+
+    const body = {
+      from: { email: 'noreply@a55.tech', name: 'Plataforma A55' },
+      personalizations: [
+        {
+          to: [ { email } ],
+          dynamic_template_data: {
+            name,
+          },
+        },
+      ],
+      template_id: 'd-5c931b95d92a42049acec5d39957dc1e',
+    };
+
+    sendgrid.send(body);
+
+    return response.status(200).json({
+      status: 'success',
+      description: 'E-mail enviado com sucesso!',
+    });
+  } catch (e) {
+    return response.status(500).json({
+      status: 'error',
+      description: 'Erro ao enviar o seu e-mail, tente novamente mais tarde.',
+    });
+  };
+};
+
 module.exports = {
   sendConfirmationMail,
   sendNotificationMail,
   sendAbandonmentMail,
   sendDataMissingMail,
+  sendUnderAnalysisMail,
 };

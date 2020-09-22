@@ -52,4 +52,27 @@ module.exports = {
     access_token,
     body,
   }) => apiHelperSplitBalance({access_token}).post(`/transfers`, body),
+  transferToBankAccount: ({
+    amount,
+    bankNumber,
+    agencyNumber,
+    agencyCheckNumber,
+    accountNumber,
+    accountCheckNumber,
+    holder
+  }) => moip.transfer.create({
+    amount,
+    transferInstrument: {
+        method: "BANK_ACCOUNT",
+        bankAccount: {
+            type: "CHECKING",
+            bankNumber,
+            agencyNumber,
+            agencyCheckNumber,
+            accountNumber,
+            accountCheckNumber,
+            holder
+        }
+    }
+  }),
 };
