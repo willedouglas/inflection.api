@@ -16,33 +16,6 @@ const getAccessToken = async() => {
     return response.data.access_token;
 }
 
-// const createVirtualCard = async () => {
-//     try {
-//
-//
-//         const token = await getAccessToken();
-//         const apiBearer = api({
-//             headers: {
-//                 "Accept": "application/json",
-//                 "Content-Type": "application/json",
-//                 "Authorization": `Bearer ${token}`,
-//                 "api-version": "1.0"
-//             }
-//         })
-//         console.log(apiBearer)
-//         const payload = {
-//             documentNumber: '33837677877'
-//         }
-//         console.log(`${process.env.BANKLY_SANDBOX_URL}cards/virtual`)
-//         const result = await apiBearer.post(`${process.env.BANKLY_SANDBOX_URL}cards/virtual`, payload)
-//         console.log(result)
-//         return result.data.activateCode
-//     } catch (e) {
-//         console.log(e.message)
-//     }
-// }
-
 module.exports = {
     getAccessToken,
-    // createVirtualCard
 }
