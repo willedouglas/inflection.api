@@ -3,6 +3,7 @@ const { begin, end } = require('../../../constants');
 const { normalizeStatements } = require('./wirecardService');
 const { companyIdValidate } = require('../../helpers/format');
 const { getAccessToken } = require('../../models/paymentAccount/wirecard');
+const keys = require('../../config/wirecard.keys');
 
 const getAuthorizeUrl = async (request, response) => {
   try {
@@ -121,7 +122,7 @@ const transferToWirecardAccount = async (request, response) => {
       transferInstrument:{  
          method:"MOIP_ACCOUNT",
          moipAccount:{  
-            id:"MPA-E943AAD386D6"
+            id:`${keys.moip_account}`
          }
       }
     }
@@ -140,10 +141,45 @@ const transferToWirecardAccount = async (request, response) => {
   }
 };
 
+const transferToBankAccount = async (request, response) => {
+  try {
+    const {
+      amount,
+      bankNumber,
+      agencyNumber,
+      agencyCheckNumber,
+      accountNumber,
+      accountCheckNumber,
+      holder
+    } = request.body;
+    const data = await wirecard.transferToBankAccount({
+      amount,
+      bankNumber,
+      agencyNumber,
+      agencyCheckNumber,
+      accountNumber,
+      accountCheckNumber,
+      holder
+    });
+
+    return response.status(200).json({
+      status: 'success',
+      data,
+    });
+
+  } catch (e) {
+    return response.status(500).json({
+      status: 'error',
+      description: e.message,
+    });
+  }
+};
+
 module.exports = {
   getAuthorizeUrl,
   generateToken,
   getStatements,
   getBalances,
   transferToWirecardAccount,
+  transferToBankAccount,
 }
