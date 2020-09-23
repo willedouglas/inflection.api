@@ -19,7 +19,8 @@ routes(app);
 
 cron.schedule('30 0 * * *', async () => {
   await jobs.checkIncompleteRecords();
-  console.log(`SCHEDULED TASK RUNNING ON: ${Date()}`);
+  await jobs.checkMissingBankAccounts();
+  console.log(`SCHEDULED TASKS RUNNING ON: ${Date()}`);
 });
 
 module.exports = app;
