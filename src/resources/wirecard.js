@@ -9,6 +9,11 @@ const moip = require('moip-sdk-node').default({
   production: isProduction
 });
 
+const moipTransfer = require('moip-sdk-node').default({
+  accessToken: keys.accessTokenTransfer,
+  production: isProduction
+});
+
 const apiHelper = api({
   baseURL,
   headers: {
@@ -32,12 +37,26 @@ module.exports = {
     redirectUri: keys.redirectUri,
     scopes: keys.scopes,
   }),
+  getAuthorizeTransferUrl: () => moipTransfer.connect.getAuthorizeUrl({
+    clientId: keys.client_idTransfer,
+    redirectUri: keys.redirectTransferUri,
+    scopes: keys.scopes_transfer,
+  }),
   generateToken: ({
     code
   }) => moip.connect.generateToken({
     clientId: keys.client_id,
     redirectUri: keys.redirectUri,
     client_secret: keys.client_secret,
+    grant_type: 'authorization_code',
+    code,
+  }),
+  generateTokenTransfer: ({
+    code
+  }) => moipTransfer.connect.generateToken({
+    clientId: keys.client_idTransfer,
+    redirectUri: keys.redirectTransferUri,
+    client_secret: keys.client_secretTransfer,
     grant_type: 'authorization_code',
     code,
   }),
