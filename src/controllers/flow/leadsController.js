@@ -13,7 +13,7 @@ const createLead = async (request, response) => {
 
     const name = `${firstname} ${lastname}`;
 
-    await leadResource.createLead({ name, email, cnpj });
+    await leadResource.createLead({ name, email, cnpj, product_id = 4 });
 
     return response.status(201).json({
       status: 'created',
