@@ -313,7 +313,7 @@ const upload = async ({
 
     const accounts = await client.query(`SELECT * FROM adfinance.account WHERE company_id = $1`, [company_id]);
 
-    const lastAccount = accounts.rows[selectRequests.rows.length - 1];
+    const lastAccount = accounts.rows[accounts.rows.length - 1];
     const account_id = lastAccount.id;
 
     if (account_id) {
@@ -350,7 +350,7 @@ const uploads = async ({ company_id }) => {
 
     const accounts = await client.query(`SELECT * FROM adfinance.account WHERE company_id = $1`, [company_id]);
 
-    const lastAccount = accounts.rows[selectRequests.rows.length - 1];
+    const lastAccount = accounts.rows[accounts.rows.length - 1];
     const account_id = lastAccount.id;
 
     const uploads = await client.query(`SELECT * FROM adfinance.uploads WHERE account_id = $1`, [account_id]);
