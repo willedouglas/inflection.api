@@ -58,6 +58,61 @@ const register = async (request, response) => {
   };
 };
 
+const update = async (request, response) => {
+  try {
+    const {
+      how_meet_us,
+      firstname,
+      lastname,
+      email,
+      phone,
+      role,
+      company_name,
+      company_id,
+      website,
+      monthly_gross_revenue,
+      corporate_name,
+      company_category,
+      company_zip,
+      company_address_number,
+      average_monthly_ads_investment,
+      ads,
+      analytics,
+      payments,
+    } = request.body;
+
+    await registerModel.update({
+      how_meet_us,
+      firstname,
+      lastname,
+      email,
+      phone,
+      role,
+      company_name,
+      company_id,
+      website,
+      monthly_gross_revenue,
+      corporate_name,
+      company_category,
+      company_zip,
+      company_address_number,
+      average_monthly_ads_investment,
+      ads,
+      analytics,
+      payments,
+    });
+
+    return response.status(201).json({
+      status: 'updated',
+    });
+  } catch (e) {
+    return response.status(500).json({
+      status: 'error',
+      description: e.message,
+    });
+  };
+};
+
 const registerTemporary = async (request, response) => {
   try {
     const {
@@ -105,5 +160,6 @@ const registerTemporary = async (request, response) => {
 
 module.exports = {
   register,
+  update,
   registerTemporary,
 };

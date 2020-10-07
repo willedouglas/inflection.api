@@ -237,6 +237,71 @@ const register = async ({
   }
 };
 
+const update = async ({
+  how_meet_us,
+  firstname,
+  lastname,
+  email,
+  phone,
+  role,
+  company_name,
+  company_id,
+  website,
+  monthly_gross_revenue,
+  corporate_name,
+  company_category,
+  company_zip,
+  company_address_number,
+  average_monthly_ads_investment,
+}) => {
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    await client.query(`
+      UPDATE adfinance.account SET
+        first_name = $1,
+        last_name = $2,
+        email = $3,
+        phone = $4,
+        role = $5,
+        company_name = $6,
+        website = $7,
+        monthly_gross_revenue = $8,
+        corporate_name = $9,
+        company_category = $10,
+        company_zip = $11,
+        company_address_number = $12,
+        average_monthly_ads_investment = $13,
+        how_meet_us = $14
+      )
+    WHERE company_id = $15`,
+      [
+        firstname,
+        lastname,
+        email,
+        phone,
+        role,
+        company_name,
+        website,
+        monthly_gross_revenue,
+        corporate_name,
+        company_category,
+        company_zip,
+        company_address_number,
+        average_monthly_ads_investment,
+        how_meet_us,
+        company_id,
+      ]);
+  } catch (e) {
+    await client.query('ROLLBACK');
+    throw e;
+  } finally {
+    client.release();
+  }
+};
+
 const registerTemporaryAccount = async ({
   firstname,
   lastname,
@@ -267,5 +332,6 @@ const registerTemporaryAccount = async ({
 
 module.exports = {
   register,
+  update,
   registerTemporaryAccount,
 };
