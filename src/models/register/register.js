@@ -293,6 +293,8 @@ const update = async ({
         how_meet_us,
         company_id,
       ]);
+
+    await client.query('COMMIT');
   } catch (e) {
     await client.query('ROLLBACK');
     throw e;
@@ -314,7 +316,7 @@ const upload = async ({
     const accounts = await client.query(`SELECT * FROM adfinance.account WHERE company_id = $1`, [company_id]);
 
     const lastAccount = accounts.rows[accounts.rows.length - 1];
-    const account_id = lastAccount.id;
+    const account_id = lastAccount && lastAccount.id;
 
     if (account_id) {
       await client.query(`
@@ -334,6 +336,8 @@ const upload = async ({
     } else {
       throw new Error('Essa empresa não possui solicitações.');
     }
+
+    await client.query('COMMIT');
   } catch (e) {
     await client.query('ROLLBACK');
     throw e;
@@ -351,9 +355,13 @@ const uploads = async ({ company_id }) => {
     const accounts = await client.query(`SELECT * FROM adfinance.account WHERE company_id = $1`, [company_id]);
 
     const lastAccount = accounts.rows[accounts.rows.length - 1];
-    const account_id = lastAccount.id;
+    const account_id = lastAccount && lastAccount.id;
 
-    const uploads = await client.query(`SELECT * FROM adfinance.uploads WHERE account_id = $1`, [account_id]);
+    let uploads = { rows: [] }; 
+    
+    if (account_id) {
+      uploads = await client.query(`SELECT * FROM adfinance.uploads WHERE account_id = $1`, [account_id]);
+    }
 
     return uploads.rows;
   } catch (e) {

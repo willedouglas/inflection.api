@@ -91,7 +91,6 @@ const getFacebookInsights = async (request, response) => {
     });
 
   } catch (e) {
-    console.log(e.response.data.error);
     const errorMessage = (e.response && e.response.data && e.response.data.error && e.response.data.error.code) || 'DEFAULT';
 
     return response.status(500).json({

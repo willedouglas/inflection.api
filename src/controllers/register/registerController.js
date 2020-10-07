@@ -118,6 +118,20 @@ const upload = async (request, response) => {
       method,
     } = request.body;
 
+    if (!method) {
+      return response.status(400).json({
+        status: 'error',
+        description: 'Método não informado.',
+      });
+    }
+
+    if (!company_id) {
+      return response.status(400).json({
+        status: 'error',
+        description: 'Empresa não informada.',
+      });
+    }
+
     await registerModel.upload({
       company_id,
       method,
