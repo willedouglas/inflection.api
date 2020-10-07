@@ -15,6 +15,8 @@ const banklyController = require('../controllers/bankly/banklyController');
 
 router.post('/register', registerController.register);
 router.post('/update', registerController.update);
+router.post('/upload', registerController.upload);
+router.get('/uploads', registerController.uploads);
 router.post('/leads', leadsController.createLead);
 router.post('/register/temporary', registerController.registerTemporary);
 router.post('/google/campaigns/evaluation', googleAdwordsEvaluationController.googleAdwordsEvaluation);

@@ -2,7 +2,7 @@ module.exports = `
 create table adfinance.account(
   id serial primary key,
   first_name varchar (255) null,
-  last_name  varchar (255) null,
+  last_name varchar (255) null,
   email varchar (255) null,
   phone varchar (11) null,
   role varchar (50) null,
@@ -19,11 +19,19 @@ create table adfinance.account(
   created_on timestamp with time zone default current_timestamp
 );
 
+create table adfinance.uploads(
+  id serial primary key,
+  account_id integer references adfinance.account (id) not null,
+  path varchar (255) null,
+  method varchar (255) null,
+  created_on timestamp with time zone default current_timestamp
+);
+
 create table adfinance.advertising_account(
   id serial primary key,
   account_id integer references adfinance.account (id) not null,
   method varchar (50) not null,
-  name  varchar (255),
+  name varchar (255),
   email varchar (255),
   customer_account_id varchar (50),
   access_token varchar (255),

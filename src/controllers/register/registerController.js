@@ -1,7 +1,11 @@
 'use strict';
-
+const authResource = require('../../resources/auth');
 const registerModel = require('../../models/register/register');
 const sendgrid = require('../../resources/sendgrid');
+
+const {
+  cleanString,
+} = require('../../helpers/format');
 
 const register = async (request, response) => {
   try {
@@ -107,6 +111,74 @@ const update = async (request, response) => {
   };
 };
 
+const upload = async (request, response) => {
+  try {
+    const {
+      company_id,
+      method,
+    } = request.body;
+
+    await registerModel.upload({
+      company_id,
+      method,
+    });
+
+    return response.status(201).json({
+      status: 'uploaded',
+    });
+  } catch (e) {
+    return response.status(500).json({
+      status: 'error',
+      description: e.message,
+    });
+  };
+};
+
+const uploads = async (request, response) => {
+  try {
+    const token = request.headers.authorization;
+    let {
+      company_id
+    } = request.query;
+
+    company_id = cleanString(company_id);
+
+    if (!token) {
+      return response.status(400).json({
+        status: 'error',
+        description: 'Token de autorização não encontrado.',
+      });
+    }
+
+    if (!company_id) {
+      return response.status(400).json({
+        status: 'error',
+        description: 'Empresa não informada.',
+      });
+    }
+
+    await authResource.getClearance({
+      token,
+      company_id,
+    });
+
+    const searchedUploads = await registerModel.uploads({
+      company_id,
+    });
+
+    return response.status(200).json({
+      status: 'success',
+      data: searchedUploads,
+    });
+  } catch (e) {
+    const errorMessage = e.response && e.response.data && e.response.data.detail || 'Erro desconhecido, aguarde uns instantes e tente novamente.';
+    return response.status(500).json({
+      status: 'error',
+      description: errorMessage,
+    });
+  };
+};
+
 const registerTemporary = async (request, response) => {
   try {
     const {
@@ -155,5 +227,7 @@ const registerTemporary = async (request, response) => {
 module.exports = {
   register,
   update,
+  uploads,
+  upload,
   registerTemporary,
 };

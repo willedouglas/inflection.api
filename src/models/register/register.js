@@ -301,6 +301,69 @@ const update = async ({
   }
 };
 
+const upload = async ({
+  company_id,
+  path,
+  method,
+}) => {
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    const accounts = await client.query(`SELECT * FROM adfinance.account WHERE company_id = $1`, [company_id]);
+
+    const lastAccount = accounts.rows[selectRequests.rows.length - 1];
+    const account_id = lastAccount.id;
+
+    if (account_id) {
+      await client.query(`
+      INSERT INTO
+        adfinance.uploads (
+          account_id,
+          path,
+          method
+        )
+      VALUES
+        ($1, $2, $3)`,
+        [
+          account_id,
+          path,
+          method,
+        ]);
+    } else {
+      throw new Error('Essa empresa não possui solicitações.');
+    }
+  } catch (e) {
+    await client.query('ROLLBACK');
+    throw e;
+  } finally {
+    client.release();
+  }
+};
+
+const uploads = async ({ company_id }) => {
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    const accounts = await client.query(`SELECT * FROM adfinance.account WHERE company_id = $1`, [company_id]);
+
+    const lastAccount = accounts.rows[selectRequests.rows.length - 1];
+    const account_id = lastAccount.id;
+
+    const uploads = await client.query(`SELECT * FROM adfinance.uploads WHERE account_id = $1`, [account_id]);
+
+    return uploads.rows;
+  } catch (e) {
+    await client.query('ROLLBACK');
+    throw e;
+  } finally {
+    client.release();
+  }
+};
+
 const registerTemporaryAccount = async ({
   firstname,
   lastname,
@@ -332,5 +395,7 @@ const registerTemporaryAccount = async ({
 module.exports = {
   register,
   update,
+  upload,
+  uploads,
   registerTemporaryAccount,
 };
