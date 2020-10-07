@@ -275,8 +275,7 @@ const update = async ({
         company_address_number = $12,
         average_monthly_ads_investment = $13,
         how_meet_us = $14
-      )
-    WHERE company_id = $15`,
+      WHERE company_id = $15`,
       [
         firstname,
         lastname,

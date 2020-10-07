@@ -76,9 +76,6 @@ const update = async (request, response) => {
       company_zip,
       company_address_number,
       average_monthly_ads_investment,
-      ads,
-      analytics,
-      payments,
     } = request.body;
 
     await registerModel.update({
@@ -97,9 +94,6 @@ const update = async (request, response) => {
       company_zip,
       company_address_number,
       average_monthly_ads_investment,
-      ads,
-      analytics,
-      payments,
     });
 
     return response.status(201).json({
