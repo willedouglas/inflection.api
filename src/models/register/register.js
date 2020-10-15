@@ -487,6 +487,22 @@ const registerTemporaryAccount = async ({
   }
 };
 
+const emailExists = async ( email ) => {
+  const client = await pool.connect();
+  try {
+    if (email) {
+      await client.query('BEGIN');
+      const result = await client.query(`SELECT COUNT(email) FROM adfinance.account where email = $1`, [email]);
+      return result.rows[0].count > 0;
+    }
+    throw new Error('Email inválido.');
+  } catch (e) {
+    throw e;
+  } finally {
+    client.release();
+  }
+};
+
 module.exports = {
   register,
   update,
@@ -494,4 +510,5 @@ module.exports = {
   uploads,
   adsEvaluation,
   registerTemporaryAccount,
+  emailExists,
 };
