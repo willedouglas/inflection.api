@@ -27,8 +27,9 @@ module.exports = {
     .catch((error) => handleClientProcessError(error)),
   upload: ({ document_id, client_tax_id, file }) => {
     const uploadFormData = new FormData();
+    const uniqueFile = file[0];
     uploadFormData.append('client_tax_id', client_tax_id);
-		uploadFormData.append('file', fs.createReadStream(file.path));
+		uploadFormData.append('file', fs.createReadStream(uniqueFile.path));
     return apiHelper.post(`/documents/${document_id}/upload`, uploadFormData);
   }
 };

@@ -122,7 +122,7 @@ const upload = async (request, response) => {
       method,
     } = request.body;
 
-    const file = request && request.files && request.files.file[0];
+    const { file } = request.files;
 
     if (!method) {
       return response.status(400).json({
@@ -187,10 +187,10 @@ const upload = async (request, response) => {
       status: 'uploaded',
     });
   } catch (e) {
-    console.log(e.response.data);
     return response.status(500).json({
       status: 'error',
       description: e.message,
+      detail: e.response && e.response.data
     });
   };
 };
