@@ -1,6 +1,4 @@
 const api = require('../helpers/api');
-const fs = require('fs');
-const FormData = require('form-data');
 
 const isProduction = process.env.ENV === 'production';
 
@@ -25,11 +23,4 @@ module.exports = {
   clientProcess: ({ client_tax_id, process_template_id, groups }) => apiHelper
     .post('/clientProcess', { client_tax_id, process_template_id, groups })
     .catch((error) => handleClientProcessError(error)),
-  upload: ({ document_id, client_tax_id, file }) => {
-    const uploadFormData = new FormData();
-    const uniqueFile = file[0];
-    uploadFormData.append('client_tax_id', client_tax_id);
-		uploadFormData.append('file', fs.createReadStream(uniqueFile.path));
-    return apiHelper.post(`/documents/${document_id}/upload`, uploadFormData);
-  }
 };

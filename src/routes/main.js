@@ -4,9 +4,6 @@ const express = require('express');
 const multer = require('multer');
 const router = express.Router();
 
-const upload = multer({ dest: 'tmp/' });
-const file = upload.fields([{ name: 'file', maxCount: 1 }]);
-
 const googleAdwordsEvaluationController = require('../controllers/adwords/googleAdwordsEvaluationController');
 const googleAnalyticsEvaluationController = require('../controllers/analytics/googleAnalyticsEvaluationController');
 const registerController = require('../controllers/register/registerController');
@@ -19,7 +16,7 @@ const banklyController = require('../controllers/bankly/banklyController');
 
 router.post('/register', registerController.register);
 router.post('/update', registerController.update);
-router.post('/upload', file, registerController.upload);
+router.post('/client/process', registerController.clientProcess);
 router.get('/uploads', registerController.uploads);
 router.post('/leads', leadsController.createLead);
 router.post('/register/temporary', registerController.registerTemporary);

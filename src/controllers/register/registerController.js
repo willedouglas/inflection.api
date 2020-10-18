@@ -114,15 +114,13 @@ const update = async (request, response) => {
   };
 };
 
-const upload = async (request, response) => {
+const clientProcess = async (request, response) => {
   try {
     const token = request.headers.authorization;
     const {
       company_id,
       method,
     } = request.body;
-
-    const { file } = request.files;
 
     if (!method) {
       return response.status(400).json({
@@ -138,28 +136,9 @@ const upload = async (request, response) => {
       });
     }
 
-    if (!file) {
-      return response.status(400).json({
-        status: 'error',
-        description: 'Arquivo não informado.',
-      });
-    }
-
     const ADFINANCE_REPORT_TEMPLATE_ID = isProduction
       ? "5f80a13d753f83892707c021"
       : "5f875ff1859d30a763c43972";
-
-    const NORMALIZED_DOCUMENT_ID = {
-      "GOOGLE_ADS": isProduction
-        ? "5f869475e7010215b1a5a31c"
-        : "5f87791c79b369b334f75c9c",
-      "FACEBOOK_ADS": isProduction
-        ? "5f869475e7010215b1a5a31d"
-        : "5f88853ed60abfbcf9b92b22",
-      "INSTAGRAM_ADS": isProduction
-        ? "5f869475e7010215b1a5a31e"
-        : "5f88853fd60abfbcf9b92b23",
-    };
 
     await authResource.getClearance({
       token,
@@ -170,12 +149,6 @@ const upload = async (request, response) => {
       client_tax_id: company_id,
       process_template_id: ADFINANCE_REPORT_TEMPLATE_ID,
       groups: {},
-    });
-
-    await documentResource.upload({
-      document_id: NORMALIZED_DOCUMENT_ID[method],
-      file,
-      client_tax_id: company_id,
     });
 
     await registerModel.upload({
@@ -289,6 +262,6 @@ module.exports = {
   register,
   update,
   uploads,
-  upload,
+  clientProcess,
   registerTemporary,
 };
