@@ -1,7 +1,10 @@
 'use strict';
 const authResource = require('../../resources/auth');
 const registerModel = require('../../models/register/register');
-const sendgrid = require('../../resources/sendgrid');
+const sendgridResource = require('../../resources/sendgrid');
+const documentResource = require('../../resources/document');
+
+const isProduction = process.env.ENV === 'production';
 
 const {
   cleanString,
@@ -113,10 +116,13 @@ const update = async (request, response) => {
 
 const upload = async (request, response) => {
   try {
+    const token = request.headers.authorization;
     const {
       company_id,
       method,
     } = request.body;
+
+    const file = request && request.files && request.files.file[0];
 
     if (!method) {
       return response.status(400).json({
@@ -132,6 +138,46 @@ const upload = async (request, response) => {
       });
     }
 
+    if (!file) {
+      return response.status(400).json({
+        status: 'error',
+        description: 'Arquivo não informado.',
+      });
+    }
+
+    const ADFINANCE_REPORT_TEMPLATE_ID = isProduction
+      ? "5f80a13d753f83892707c021"
+      : "5f875ff1859d30a763c43972";
+
+    const NORMALIZED_DOCUMENT_ID = {
+      "GOOGLE_ADS": isProduction
+        ? "5f869475e7010215b1a5a31c"
+        : "5f87791c79b369b334f75c9c",
+      "FACEBOOK_ADS": isProduction
+        ? "5f869475e7010215b1a5a31d"
+        : "5f88853ed60abfbcf9b92b22",
+      "INSTAGRAM_ADS": isProduction
+        ? "5f869475e7010215b1a5a31e"
+        : "5f88853fd60abfbcf9b92b23",
+    };
+
+    await authResource.getClearance({
+      token,
+      company_id,
+    });
+
+    await documentResource.clientProcess({
+      client_tax_id: company_id,
+      process_template_id: ADFINANCE_REPORT_TEMPLATE_ID,
+      groups: {},
+    });
+
+    await documentResource.upload({
+      document_id: NORMALIZED_DOCUMENT_ID[method],
+      file,
+      client_tax_id: company_id,
+    });
+
     await registerModel.upload({
       company_id,
       method,
@@ -141,6 +187,7 @@ const upload = async (request, response) => {
       status: 'uploaded',
     });
   } catch (e) {
+    console.log(e.response.data);
     return response.status(500).json({
       status: 'error',
       description: e.message,
@@ -225,7 +272,7 @@ const registerTemporary = async (request, response) => {
       template_id: 'd-61929435d77b403eb2ccfa93fad57cef',
     };
 
-    sendgrid.send(bodySendgrid);
+    sendgridResource.send(bodySendgrid);
 
     return response.status(201).json({
       status: 'created temporary',
