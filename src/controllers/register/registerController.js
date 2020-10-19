@@ -33,29 +33,35 @@ const register = async (request, response) => {
       payments,
     } = request.body;
 
-    await registerModel.register({
-      how_meet_us,
-      firstname,
-      lastname,
-      email,
-      phone,
-      role,
-      company_name,
-      company_id,
-      website,
-      monthly_gross_revenue,
-      corporate_name,
-      company_category,
-      company_zip,
-      company_address_number,
-      average_monthly_ads_investment,
-      ads,
-      analytics,
-      payments,
-    });
+    if (!await registerModel.emailExists(email)) {
+      await registerModel.register({
+        how_meet_us,
+        firstname,
+        lastname,
+        email,
+        phone,
+        role,
+        company_name,
+        company_id,
+        website,
+        monthly_gross_revenue,
+        corporate_name,
+        company_category,
+        company_zip,
+        company_address_number,
+        average_monthly_ads_investment,
+        ads,
+        analytics,
+        payments,
+      });
 
-    return response.status(201).json({
-      status: 'created',
+      return response.status(201).json({
+        status: 'created',
+      });
+    }
+    return response.status(409).json({
+      status: 'error',
+      description: 'Este email já está sendo usado.',
     });
   } catch (e) {
     return response.status(500).json({
@@ -299,6 +305,26 @@ const registerTemporary = async (request, response) => {
   };
 };
 
+const emailIsAvailable = async (request, response) => {
+  try {
+    const {
+      email
+    } = request.query;
+    const emailExists = await registerModel.emailExists(email);
+    const httpStatus = emailExists ? 409 : 200;
+    const status = emailExists ? 'error' : 'success';
+    return response.status(httpStatus).json({
+      status: status,
+      available: !emailExists,
+    });
+  } catch (e) {
+    return response.status(500).json({
+      status: 'error',
+      description: e.message,
+    });
+  }
+}
+
 module.exports = {
   register,
   update,
@@ -306,4 +332,5 @@ module.exports = {
   clientProcess,
   registerTemporary,
   adsEvaluation,
+  emailIsAvailable,
 };

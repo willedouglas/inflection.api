@@ -19,6 +19,7 @@ router.post('/update', registerController.update);
 router.post('/client/process', registerController.clientProcess);
 router.post('/integration/campaigns/evaluation', registerController.adsEvaluation);
 router.get('/uploads', registerController.uploads);
+router.get('/email/available', registerController.emailIsAvailable);
 router.post('/leads', leadsController.createLead);
 router.post('/register/temporary', registerController.registerTemporary);
 router.post('/google/campaigns/evaluation', googleAdwordsEvaluationController.googleAdwordsEvaluation);
