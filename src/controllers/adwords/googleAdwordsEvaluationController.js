@@ -33,7 +33,7 @@ const googleAdwordsEvaluation = async (request, response) => {
     if (!customer_account_id) {
       return response.status(400).json({
         status: 'error',
-        description: 'Identificador do cliente não encontrado.'
+        description: 'Identificador da conta não encontrado.'
       });
     }
 

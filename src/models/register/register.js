@@ -372,6 +372,93 @@ const uploads = async ({ company_id }) => {
   }
 };
 
+const adsEvaluation = async ({ company_id, ads }) => {
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    const accounts = await client.query(`SELECT * FROM adfinance.account WHERE company_id = $1`, [company_id]);
+
+    const lastAccount = accounts.rows[accounts.rows.length - 1];
+    const account_id = lastAccount && lastAccount.id;
+
+    let adsQuery;
+    
+    const insertAdsQuery = await client.query(`
+    INSERT INTO
+      adfinance.advertising_account (account_id, method, name, email, customer_account_id, access_token)
+    VALUES
+      ($1, $2, $3, $4, $5, $6)
+    RETURNING
+      id`,
+      [
+        account_id,
+        ads.method,
+        ads.name,
+        ads.email,
+        ads.customer_account_id,
+        ads.access_token,
+      ]);
+
+    const advertisingAccountId = insertAdsQuery.rows[0].id;
+
+    adsQuery = ads.evaluation.forEach(async campaign => {
+      await client.query(`
+      INSERT INTO
+        adfinance.campaign (
+          advertising_account_id,
+          campaign_id,
+          name,
+          status,
+          type,
+          date,
+          clicks,
+          impressions,
+          ctr,
+          cost,
+          average_cpc,
+          absolute_top_impression_percentage,
+          top_impression_percentage,
+          conversions,
+          view_through_conversions,
+          cost_per_conversion,
+          conversion_rate,
+          average_cpm
+        )
+      VALUES
+        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)`,
+        [
+          advertisingAccountId,
+          campaign.id,
+          campaign.name,
+          campaign.status,
+          campaign.type,
+          campaign.date,
+          campaign.metrics.clicks,
+          campaign.metrics.impressions,
+          campaign.metrics.ctr,
+          campaign.metrics.cost,
+          campaign.metrics.averageCpc,
+          campaign.metrics.absoluteTopImpressionPercentage,
+          campaign.metrics.topImpressionPercentage,
+          campaign.metrics.conversions,
+          campaign.metrics.viewThroughConversions,
+          campaign.metrics.costPerConversions,
+          campaign.metrics.conversionsRate,
+          campaign.metrics.averageCpm,
+        ]);
+    });
+
+    await client.query('COMMIT');
+  } catch (e) {
+    await client.query('ROLLBACK');
+    throw e;
+  } finally {
+    client.release();
+  }
+}
+
 const registerTemporaryAccount = async ({
   firstname,
   lastname,
@@ -405,5 +492,6 @@ module.exports = {
   update,
   upload,
   uploads,
+  adsEvaluation,
   registerTemporaryAccount,
 };

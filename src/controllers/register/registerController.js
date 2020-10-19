@@ -117,10 +117,12 @@ const update = async (request, response) => {
 const clientProcess = async (request, response) => {
   try {
     const token = request.headers.authorization;
-    const {
+    let {
       company_id,
       method,
     } = request.body;
+
+    company_id = cleanString(company_id);
 
     if (!method) {
       return response.status(400).json({
@@ -187,7 +189,7 @@ const uploads = async (request, response) => {
     if (!company_id) {
       return response.status(400).json({
         status: 'error',
-        description: 'Empresa não informada.',
+        description: 'Identificador da empresa não informada.',
       });
     }
 
@@ -209,6 +211,45 @@ const uploads = async (request, response) => {
     return response.status(500).json({
       status: 'error',
       description: errorMessage,
+    });
+  };
+};
+
+const adsEvaluation = async (request, response) => {
+  try {
+    let {
+      company_id,
+      ads,
+    } = request.body;
+
+    company_id = cleanString(company_id);
+
+    if (!company_id) {
+      return response.status(400).json({
+        status: 'error',
+        description: 'Identificador da empresa não informado.',
+      });
+    }
+
+    if (!ads) {
+      return response.status(400).json({
+        status: 'error',
+        description: 'Dados de avaliação da campanha não informado.',
+      });
+    }
+
+    await registerModel.adsEvaluation({
+      company_id,
+      ads,
+    });
+
+    return response.status(201).json({
+      status: 'created',
+    });
+  } catch (e) {
+    return response.status(500).json({
+      status: 'error',
+      description: e.message,
     });
   };
 };
@@ -264,4 +305,5 @@ module.exports = {
   uploads,
   clientProcess,
   registerTemporary,
+  adsEvaluation,
 };
