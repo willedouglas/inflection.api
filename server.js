@@ -1,13 +1,11 @@
-'use strict';
-
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const cors = require('cors');
+const cron = require('node-cron');
 const origin = require('./src/config/origin');
 const routes = require('./src/routes/index');
-const cors = require('cors');
 
-const cron = require('node-cron');
 const jobs = require('./src/helpers/cronjobs');
 
 const app = express();

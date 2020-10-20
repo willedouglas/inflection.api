@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+
 const isStaging = process.env.ENV === 'staging';
 const isProduction = process.env.ENV === 'production';
 

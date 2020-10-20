@@ -1,14 +1,14 @@
 const api = require('../helpers/api');
 
 const isProduction = process.env.ENV === 'production';
-const baseURL = `${ isProduction ? 'https://auth-api.a55.tech/api' : 'https://auth-api-staging.a55.tech/api' }`;
+const baseURL = `${isProduction ? 'https://auth-api.a55.tech/api' : 'https://auth-api-staging.a55.tech/api'}`;
 
 const apiHelper = ({
-  token
+  token,
 }) => api({
   baseURL,
   headers: {
-    Authorization: `Token ${token}`
+    Authorization: `Token ${token}`,
   },
 });
 
@@ -17,8 +17,8 @@ module.exports = {
     token,
     company_id,
   }) => apiHelper({
-    token
+    token,
   }).post('/clearance', {
-    clearance: `a55::midgard::client::${company_id}::read`
+    clearance: `a55::midgard::client::${company_id}::read`,
   }),
 };

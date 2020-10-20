@@ -1,19 +1,17 @@
-'use strict';
-
 const adwords = require('../../resources/googleAdwords');
 const {
-  handleGoogleErrors
+  handleGoogleErrors,
 } = require('../../helpers/errors');
 const {
   cleanString,
-  removeSpaces
+  removeSpaces,
 } = require('../../helpers/format');
 const {
-  normalizeEvaluation
+  normalizeEvaluation,
 } = require('./googleAdwordsEvaluationService');
 const {
   startDate,
-  endDate
+  endDate,
 } = require('../../../constants');
 
 const googleAdwordsEvaluation = async (request, response) => {
@@ -26,14 +24,14 @@ const googleAdwordsEvaluation = async (request, response) => {
     if (!access_token) {
       return response.status(400).json({
         status: 'error',
-        description: 'Token de acesso não encontrado.'
+        description: 'Token de acesso não encontrado.',
       });
     }
 
     if (!customer_account_id) {
       return response.status(400).json({
         status: 'error',
-        description: 'Identificador da conta não encontrado.'
+        description: 'Identificador da conta não encontrado.',
       });
     }
 
@@ -79,9 +77,9 @@ const googleAdwordsEvaluation = async (request, response) => {
       status: 'error',
       description: handleGoogleErrors(errorMessage),
     });
-  };
+  }
 };
 
 module.exports = {
-  googleAdwordsEvaluation
+  googleAdwordsEvaluation,
 };

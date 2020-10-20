@@ -1,11 +1,9 @@
-'use strict';
-
 const analytics = require('../../resources/googleAnalytics');
 const {
-  handleGoogleErrors
+  handleGoogleErrors,
 } = require('../../helpers/errors');
 const {
-  normalizeEvaluation
+  normalizeEvaluation,
 } = require('./googleAnalyticsEvaluationService');
 
 const googleAnalyticsEvaluation = async (request, response) => {
@@ -18,14 +16,14 @@ const googleAnalyticsEvaluation = async (request, response) => {
     if (!access_token) {
       return response.status(400).json({
         status: 'error',
-        description: 'Token de acesso não encontrado.'
+        description: 'Token de acesso não encontrado.',
       });
     }
 
     if (!view_id) {
       return response.status(400).json({
         status: 'error',
-        description: 'Identificador do cliente não encontrado.'
+        description: 'Identificador do cliente não encontrado.',
       });
     }
 
@@ -51,9 +49,9 @@ const googleAnalyticsEvaluation = async (request, response) => {
       status: 'error',
       description: handleGoogleErrors(errorMessage),
     });
-  };
+  }
 };
 
 module.exports = {
-  googleAnalyticsEvaluation
+  googleAnalyticsEvaluation,
 };

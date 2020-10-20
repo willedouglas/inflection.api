@@ -101,4 +101,4 @@ create table adfinance.payment_grouped(
   type integer not null,
   date date not null,
   created_on timestamp with time zone default current_timestamp
-);`
+);`;

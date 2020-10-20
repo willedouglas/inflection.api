@@ -30,7 +30,7 @@ const fields = [
 const getUserAds = async (request, response) => {
   try {
     const {
-      access_token
+      access_token,
     } = request.query;
 
     if (!access_token) {
@@ -41,14 +41,13 @@ const getUserAds = async (request, response) => {
     }
 
     const adAccounts = await facebookAds.getUser({
-      access_token
+      access_token,
     });
 
     return response.status(200).json({
       status: 'success',
       data: adAccounts.data.adaccounts.data,
     });
-
   } catch (e) {
     return response.status(500).json({
       status: 'error',
@@ -89,7 +88,6 @@ const getFacebookInsights = async (request, response) => {
       ad_account_id,
       data: normalizeInsights(insights.data.data),
     });
-
   } catch (e) {
     const errorMessage = (e.response && e.response.data && e.response.data.error && e.response.data.error.code) || 'DEFAULT';
 
@@ -102,5 +100,5 @@ const getFacebookInsights = async (request, response) => {
 
 module.exports = {
   getUserAds,
-  getFacebookInsights
-}
+  getFacebookInsights,
+};

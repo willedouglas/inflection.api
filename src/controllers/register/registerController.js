@@ -1,4 +1,3 @@
-'use strict';
 const authResource = require('../../resources/auth');
 const registerModel = require('../../models/register/register');
 const sendgridResource = require('../../resources/sendgrid');
@@ -68,7 +67,7 @@ const register = async (request, response) => {
       status: 'error',
       description: e.message,
     });
-  };
+  }
 };
 
 const update = async (request, response) => {
@@ -117,15 +116,19 @@ const update = async (request, response) => {
       status: 'error',
       description: e.message,
     });
-  };
+  }
 };
 
 const clientProcess = async (request, response) => {
   try {
     const token = request.headers.authorization;
+
+    const {
+      method,
+    } = request.body;
+
     let {
       company_id,
-      method,
     } = request.body;
 
     company_id = cleanString(company_id);
@@ -145,8 +148,8 @@ const clientProcess = async (request, response) => {
     }
 
     const ADFINANCE_REPORT_TEMPLATE_ID = isProduction
-      ? "5f80a13d753f83892707c021"
-      : "5f875ff1859d30a763c43972";
+      ? '5f80a13d753f83892707c021'
+      : '5f875ff1859d30a763c43972';
 
     await authResource.getClearance({
       token,
@@ -171,16 +174,16 @@ const clientProcess = async (request, response) => {
     return response.status(500).json({
       status: 'error',
       description: e.message,
-      detail: e.response && e.response.data
+      detail: e.response && e.response.data,
     });
-  };
+  }
 };
 
 const uploads = async (request, response) => {
   try {
     const token = request.headers.authorization;
     let {
-      company_id
+      company_id,
     } = request.query;
 
     company_id = cleanString(company_id);
@@ -213,19 +216,22 @@ const uploads = async (request, response) => {
       data: searchedUploads,
     });
   } catch (e) {
-    const errorMessage = e.response && e.response.data && e.response.data.detail || 'Erro desconhecido, aguarde uns instantes e tente novamente.';
+    const errorMessage = (e.response && e.response.data && e.response.data.detail) || 'Erro desconhecido, aguarde uns instantes e tente novamente.';
     return response.status(500).json({
       status: 'error',
       description: errorMessage,
     });
-  };
+  }
 };
 
 const adsEvaluation = async (request, response) => {
   try {
+    const {
+      ads,
+    } = request.body;
+
     let {
       company_id,
-      ads,
     } = request.body;
 
     company_id = cleanString(company_id);
@@ -257,7 +263,7 @@ const adsEvaluation = async (request, response) => {
       status: 'error',
       description: e.message,
     });
-  };
+  }
 };
 
 const registerTemporary = async (request, response) => {
@@ -276,13 +282,13 @@ const registerTemporary = async (request, response) => {
       phone,
     });
 
-    const THIRTY_MINUTES_AFTER = Math.round((new Date().getTime() + 30*60000) / 1000);
+    const THIRTY_MINUTES_AFTER = Math.round((new Date().getTime() + 30 * 60000) / 1000);
 
     const bodySendgrid = {
       from: { email: 'noreply@a55.tech', name: 'A55 | Adfinance' },
       personalizations: [
         {
-          to: [ { email } ],
+          to: [{ email }],
           send_at: THIRTY_MINUTES_AFTER,
           dynamic_template_data: {
             name: `${firstname} ${lastname}`,
@@ -302,19 +308,19 @@ const registerTemporary = async (request, response) => {
       status: 'error',
       description: e.message,
     });
-  };
+  }
 };
 
 const emailIsAvailable = async (request, response) => {
   try {
     const {
-      email
+      email,
     } = request.query;
     const emailExists = await registerModel.emailExists(email);
     const httpStatus = emailExists ? 409 : 200;
     const status = emailExists ? 'error' : 'success';
     return response.status(httpStatus).json({
-      status: status,
+      status,
       available: !emailExists,
     });
   } catch (e) {
@@ -323,7 +329,7 @@ const emailIsAvailable = async (request, response) => {
       description: e.message,
     });
   }
-}
+};
 
 module.exports = {
   register,

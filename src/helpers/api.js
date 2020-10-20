@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const api = options => axios.create({
+const api = (options) => axios.create({
   ...options,
   headers: {
     'Content-Type': 'application/json',

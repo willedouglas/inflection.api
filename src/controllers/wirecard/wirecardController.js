@@ -12,7 +12,7 @@ const getAuthorizeUrl = async (request, response) => {
     return response.status(200).json({
       status: 'success',
       data: {
-        url
+        url,
       },
     });
   } catch (e) {
@@ -30,7 +30,7 @@ const getAuthorizeTransferUrl = async (request, response) => {
     return response.status(200).json({
       status: 'success',
       data: {
-        url
+        url,
       },
     });
   } catch (e) {
@@ -44,7 +44,7 @@ const getAuthorizeTransferUrl = async (request, response) => {
 const generateToken = async (request, response) => {
   try {
     const {
-      code
+      code,
     } = request.body;
 
     if (!code) {
@@ -81,7 +81,7 @@ const generateToken = async (request, response) => {
 const generateTokenTransfer = async (request, response) => {
   try {
     const {
-      code
+      code,
     } = request.body;
 
     if (!code) {
@@ -126,7 +126,6 @@ const getStatements = async (request, response) => {
       status: 'success',
       data: normalizeStatements(statements),
     });
-
   } catch (e) {
     return response.status(500).json({
       status: 'error',
@@ -139,11 +138,11 @@ const setNewToken = async (request, response) => {
   try {
     const {
       company_id,
-      access_token
+      access_token,
     } = request.body;
 
-    const result = await setNewAccessTokenTransfer({ company_id, access_token });
-    
+    await setNewAccessTokenTransfer({ company_id, access_token });
+
     return response.status(201).json({
       status: 'created',
     });
@@ -158,7 +157,7 @@ const setNewToken = async (request, response) => {
 const getBalances = async (request, response) => {
   try {
     const {
-      company_id
+      company_id,
     } = request.query;
 
     if (!company_id || !companyIdValidate(company_id)) {
@@ -170,7 +169,7 @@ const getBalances = async (request, response) => {
 
     const access_token = await getAccessTokenAuthorizedTransfer({ company_id });
     const { data } = await wirecard.getBalance({ access_token });
-    
+
     return response.status(200).json({
       status: 'success',
       data,
@@ -187,23 +186,23 @@ const transferToWirecardAccount = async (request, response) => {
   try {
     const {
       amount,
-      company_id
+      company_id,
     } = request.body;
 
     const access_token = await getAccessTokenAuthorizedTransfer({ company_id });
-    
+
     const body = {
       amount,
-      transferInstrument:{  
-         method:"MOIP_ACCOUNT",
-         moipAccount:{  
-            id:`${keys.moip_account}`
-         }
-      }
-    }
-    
+      transferInstrument: {
+        method: 'MOIP_ACCOUNT',
+        moipAccount: {
+          id: `${keys.moip_account}`,
+        },
+      },
+    };
+
     const { data } = await wirecard.transferToWirecardAccount({ access_token, body });
-    
+
     return response.status(200).json({
       status: 'success',
       data,
@@ -225,7 +224,7 @@ const transferToBankAccount = async (request, response) => {
       agencyCheckNumber,
       accountNumber,
       accountCheckNumber,
-      holder
+      holder,
     } = request.body;
     const data = await wirecard.transferToBankAccount({
       amount,
@@ -234,14 +233,13 @@ const transferToBankAccount = async (request, response) => {
       agencyCheckNumber,
       accountNumber,
       accountCheckNumber,
-      holder
+      holder,
     });
 
     return response.status(200).json({
       status: 'success',
       data,
     });
-
   } catch (e) {
     return response.status(500).json({
       status: 'error',
@@ -253,7 +251,7 @@ const transferToBankAccount = async (request, response) => {
 const checkIsWirecard = async (request, response) => {
   try {
     const {
-      company_id
+      company_id,
     } = request.query;
 
     if (!company_id || !companyIdValidate(company_id)) {
@@ -287,5 +285,5 @@ module.exports = {
   transferToBankAccount,
   checkIsWirecard,
   generateTokenTransfer,
-  setNewToken
-}
+  setNewToken,
+};
