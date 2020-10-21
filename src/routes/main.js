@@ -30,6 +30,7 @@ router.post('/wirecard/auth', wirecardController.generateToken);
 router.post('/wirecard/auth/transfer', wirecardController.generateTokenTransfer);
 router.post('/wirecard/statements', wirecardController.getStatements);
 router.post('/wirecard/token', wirecardController.setNewToken);
+router.post('/wirecard/token/readonly', wirecardController.setReadToken);
 router.post('/wirecard/transfer/wirecard', wirecardController.transferToWirecardAccount);
 router.post('/wirecard/transfer/bank', wirecardController.transferToBankAccount);
 router.post('/sendgrid/send/confirmation', sendgridController.sendConfirmationMail);
