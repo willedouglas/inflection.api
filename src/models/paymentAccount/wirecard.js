@@ -82,7 +82,7 @@ const setReadAccessToken = async ({
   access_token,
 }) => {
   const client = await pool.connect();
-  const accountId = await client.query(`select id from adfinance.account a where a.company_id = $1`, [company_id]);
+  const accountId = await client.query('select id from adfinance.account a where a.company_id = $1', [company_id]);
 
   await client.query(`
   INSERT INTO
@@ -91,7 +91,7 @@ const setReadAccessToken = async ({
     ($1, $2, $3, $4, $5)`,
   [
     accountId.rows[0].id,
-    `WIRECARD`,
+    'WIRECARD',
     0,
     0,
     access_token,
