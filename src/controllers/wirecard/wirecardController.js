@@ -2,7 +2,9 @@ const wirecard = require('../../resources/wirecard');
 const { begin, end } = require('../../../constants');
 const { normalizeStatements } = require('./wirecardService');
 const { companyIdValidate } = require('../../helpers/format');
-const { getAccessToken, getAccessTokenAuthorizedTransfer, setNewAccessTokenTransfer, setReadAccessToken } = require('../../models/paymentAccount/wirecard');
+const {
+  getAccessToken, getAccessTokenAuthorizedTransfer, setNewAccessTokenTransfer, setReadAccessToken,
+} = require('../../models/paymentAccount/wirecard');
 const keys = require('../../config/wirecard.keys');
 
 const getAuthorizeUrl = async (request, response) => {
