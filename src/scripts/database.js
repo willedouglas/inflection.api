@@ -101,4 +101,63 @@ create table adfinance.payment_grouped(
   type integer not null,
   date date not null,
   created_on timestamp with time zone default current_timestamp
-);`;
+);
+
+alter table adfinance.uploads
+drop constraint uploads_account_id_fkey;
+alter table adfinance.uploads
+add constraint uploads_account_id_fkey
+  foreign key (account_id)
+  references adfinance.account (id)
+  on delete cascade on update no action;
+
+alter table adfinance.advertising_account
+drop constraint advertising_account_account_id_fkey;
+alter table adfinance.advertising_account
+add constraint advertising_account_account_id_fkey
+  foreign key (account_id)
+  references adfinance.account (id)
+  on delete cascade on update no action;
+
+alter table adfinance.campaign
+drop constraint campaign_advertising_account_id_fkey;
+alter table adfinance.campaign
+add constraint campaign_advertising_account_id_fkey
+  foreign key (advertising_account_id)
+  references adfinance.advertising_account (id)
+  on delete cascade on update no action;
+
+alter table adfinance.analytic_account
+drop constraint analytic_account_account_id_fkey;
+alter table adfinance.analytic_account
+add constraint analytic_account_account_id_fkey
+  foreign key (account_id)
+  references adfinance.account (id)
+  on delete cascade on update no action;
+
+alter table adfinance.analytic
+drop constraint analytic_analytic_account_id_fkey;
+alter table adfinance.analytic
+add constraint analytic_analytic_account_id_fkey
+  foreign key (analytic_account_id)
+  references adfinance.analytic_account (id)
+  on delete cascade on update no action;
+
+alter table adfinance.payment_account
+drop constraint payment_account_account_id_fkey;
+alter table adfinance.payment_account
+add constraint payment_account_account_id_fkey
+  foreign key (account_id)
+  references adfinance.account (id)
+  on delete cascade on update no action;
+
+alter table adfinance.payment_grouped
+drop constraint payment_grouped_payment_account_id_fkey;
+alter table adfinance.payment_grouped
+add constraint payment_grouped_payment_account_id_fkey
+  foreign key (payment_account_id)
+  references adfinance.payment_account (id)
+  on delete cascade on update no action;
+
+alter table adfinance.account
+add constraint email_unique unique (email);`
