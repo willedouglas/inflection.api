@@ -2,7 +2,7 @@ const wirecard = require('../../resources/wirecard');
 const { begin, end } = require('../../../constants');
 const { normalizeStatements } = require('./wirecardService');
 const { companyIdValidate } = require('../../helpers/format');
-const { getAccessToken, getAccessTokenAuthorizedTransfer, setNewAccessTokenTransfer } = require('../../models/paymentAccount/wirecard');
+const { getAccessToken, getAccessTokenAuthorizedTransfer, setNewAccessTokenTransfer, setReadAccessToken } = require('../../models/paymentAccount/wirecard');
 const keys = require('../../config/wirecard.keys');
 
 const getAuthorizeUrl = async (request, response) => {
@@ -154,6 +154,26 @@ const setNewToken = async (request, response) => {
   }
 };
 
+const setReadToken = async (request, response) => {
+  try {
+    const {
+      company_id,
+      access_token,
+    } = request.body;
+
+    await setReadAccessToken({ company_id, access_token });
+
+    return response.status(201).json({
+      status: 'created',
+    });
+  } catch (e) {
+    return response.status(500).json({
+      status: 'error',
+      description: e.message,
+    });
+  }
+};
+
 const getBalances = async (request, response) => {
   try {
     const {
@@ -254,7 +274,7 @@ const checkIsWirecard = async (request, response) => {
       company_id,
     } = request.query;
 
-    if (!company_id || !companyIdValidate(company_id)) {
+    if (!company_id) {
       return response.status(400).json({
         status: 'error',
         description: 'CNPJ inválido ou não informado.',
@@ -286,4 +306,5 @@ module.exports = {
   checkIsWirecard,
   generateTokenTransfer,
   setNewToken,
+  setReadToken,
 };

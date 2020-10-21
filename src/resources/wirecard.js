@@ -35,7 +35,7 @@ const apiHelperSplitBalance = ({
 
 module.exports = {
   getAuthorizeUrl: () => moip.connect.getAuthorizeUrl({
-    clientId: keys.client_id,
+    clientId: keys.client_idTransfer,
     redirectUri: keys.redirectUri,
     scopes: keys.scopes,
   }),
@@ -47,9 +47,9 @@ module.exports = {
   generateToken: ({
     code,
   }) => moip.connect.generateToken({
-    clientId: keys.client_id,
+    clientId: keys.client_idTransfer,
     redirectUri: keys.redirectUri,
-    client_secret: keys.client_secret,
+    client_secret: keys.client_secretTransfer,
     grant_type: 'authorization_code',
     code,
   }),
