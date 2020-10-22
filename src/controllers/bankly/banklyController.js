@@ -1,4 +1,4 @@
-const { cardsVirtual } = require('../../resources/bankly');
+const { cardsVirtual, activateCard } = require('../../resources/bankly');
 const { validationResult } = require('express-validator');
 
 
@@ -16,4 +16,17 @@ exports.createPaymentCard = async (req, res) => {
       .catch(error => {
         res.json(error)
       })
+}
+
+exports.activatePaymentCard = async (req, res) => {
+    
+    const payload = { ...req.body }
+    const proxy = req.params.proxy
+    const result = activateCard(req.token, payload, proxy)
+    .then(result => {
+        res.json(result)
+    })
+    .catch(error => {
+        res.json(error) 
+    })
 }
