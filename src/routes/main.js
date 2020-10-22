@@ -35,5 +35,6 @@ router.post('/facebook/campaigns/evaluation', facebookEvaluationController.getFa
 router.get('/flow/requests', requestsController.getRequests);
 router.post('/bankly/cards/virtual', createCreditCard, authentication, banklyController.createPaymentCard);
 router.post('/bankly/cards/:proxy/activate', authentication, banklyController.activatePaymentCard);
+router.get('/bankly/cards/:proxy', authentication, banklyController.cardDetailsByProxy);
 
 module.exports = router;
