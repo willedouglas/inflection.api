@@ -37,5 +37,6 @@ router.post('/bankly/cards/virtual', createCreditCard, authentication, banklyCon
 router.post('/bankly/cards/:proxy/activate', authentication, banklyController.activatePaymentCard);
 router.get('/bankly/cards/:proxy', authentication, banklyController.cardDetailsByProxy);
 router.post('/bankly/cards/:proxy/pci', authentication, banklyController.pci);
+router.get('/bankly/cards/:proxy/transactions', authentication, banklyController.getTransactions);
 
 module.exports = router;

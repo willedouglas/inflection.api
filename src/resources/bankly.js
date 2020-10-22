@@ -78,9 +78,27 @@ const getPCIData = async(token, payload, proxy) => {
 	}
 }
 
+const getTransactionsData = async(token, proxy) => {
+	const authorizationHeader = {"authorization": `Bearer ${token}`}
+	const apiBankly = api({
+		headers: {
+			...commonHeaders,
+			...authorizationHeader
+		}
+	})
+
+	try {
+		const result = await apiBankly.get(`${process.env.BANKLY_SANDBOX_URL}cards/${proxy}/transactions`)
+		let data = result.data
+		return data
+	} catch (error) {
+		return error.response.data
+	}
+}
 module.exports = {
     cardsVirtual,
     activateCard,
     cardByProxy, 
     getPCIData,
+    getTransactionsData,
 }
