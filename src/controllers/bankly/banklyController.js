@@ -7,9 +7,13 @@ exports.createPaymentCard = async (req, res) => {
     if (!errors.isEmpty()) {
 	    return res.status(400).json({ errors: errors.array() });
     }
-    const payload = { ...req.body, ...{ bankAgency: process.env.BANKLY_AGENCY, bankAccount: process.env.BANKLY_ACCOUNT} }
-    cardsVirtual(req.token, payload)
-    .then(result => {console.log(result)})
-    .catch(err => { console.log(err)})
-    res.send(req.token);
+
+    const payload = { ...req.body, ...{ /*bankAgency: process.env.BANKLY_AGENCY, bankAccount: process.env.BANKLY_ACCOUNT, */programId: 82 }}
+    const result = cardsVirtual(req.token, payload)
+      .then(result => {
+        res.json(result)
+      })
+      .catch(error => {
+        res.json(error)
+      })
 }

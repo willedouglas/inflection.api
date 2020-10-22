@@ -2,7 +2,7 @@ const { check, validationResult } = require('express-validator');
 const api = require('../helpers/api');
 
 const authentication = async(req, res, next) => {
-    
+
     const authServerUrl = process.env.BANKLY_AUTH_SERVER_URL
     const apiHelper = api({
         headers: {
@@ -15,7 +15,7 @@ const authentication = async(req, res, next) => {
     params.append('client_secret',process.env.BANKLY_CLIENT_SECRET);
 
     const response = await apiHelper.post(authServerUrl, params);
-    req.token = response.data.access_token;	
+    req.token = response.data.access_token.replace(/\r?\n|\r/g, '');
     next()
 }
 
