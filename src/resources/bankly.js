@@ -70,7 +70,7 @@ const getPCIData = async(token, payload, proxy) => {
 	})
 
 	try {
-		const result = await apiBankly.patch(`${process.env.BANKLY_SANDBOX_URL}cards/${proxy}/pci`, payload)
+		const result = await apiBankly.post(`${process.env.BANKLY_SANDBOX_URL}cards/${proxy}/pci`, payload)
 		let data = result.data
 		return data
 	} catch (error) {
