@@ -6,6 +6,7 @@ const {
   getAccessToken, getAccessTokenAuthorizedTransfer, setNewAccessTokenTransfer, setReadAccessToken,
 } = require('../../models/paymentAccount/wirecard');
 const keys = require('../../config/wirecard.keys');
+const authResource = require('../../resources/auth');
 
 const getAuthorizeUrl = async (request, response) => {
   try {
@@ -178,9 +179,12 @@ const setReadToken = async (request, response) => {
 
 const getBalances = async (request, response) => {
   try {
+    const token = request.headers.authorization;
     const {
       company_id,
     } = request.query;
+
+    await authResource.getClearance({ token, company_id });
 
     if (!company_id || !companyIdValidate(company_id)) {
       return response.status(400).json({
