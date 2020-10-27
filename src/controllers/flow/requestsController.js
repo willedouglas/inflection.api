@@ -27,10 +27,7 @@ const getRequests = async (request, response) => {
       });
     }
 
-    await authResource.getClearance({
-      token,
-      company_id,
-    });
+    await authResource.getClearance({ token, company_id });
 
     const searchedRequests = await requests({
       company_id,
