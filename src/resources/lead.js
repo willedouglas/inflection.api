@@ -9,5 +9,9 @@ const apiHelper = api({
 });
 
 module.exports = {
-  createLead: ({ name, email, cnpj }) => apiHelper.post('/leads?sendMail=false', { name, email, cnpj }),
+  createLead: ({
+    name, email, cnpj, product_id,
+  }) => apiHelper.post('/leads?sendMail=false', {
+    name, email, cnpj, product_id,
+  }),
 };
