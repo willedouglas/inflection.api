@@ -1,8 +1,8 @@
 const express = require('express');
 
 const router = express.Router();
-const { authentication } = require('../middlewares/bankly') 
-const { createCreditCard } = require('../helpers/validators')
+const { authentication } = require('../middlewares/bankly');
+const { createCreditCard } = require('../helpers/validators');
 const googleAdwordsEvaluationController = require('../controllers/adwords/googleAdwordsEvaluationController');
 const googleAnalyticsEvaluationController = require('../controllers/analytics/googleAnalyticsEvaluationController');
 const registerController = require('../controllers/register/registerController');
