@@ -15,6 +15,10 @@ create table adfinance.account(
   company_category varchar (255) null,
   company_zip varchar (10) null,
   company_address_number varchar (255) null,
+  average_monthly_ads_investment varchar (255) not null,
+  bankly_proxy varchar(25) null,
+  bankly_activation_code varchar(18) null,
+  bankly_account_number varchar(10) null,
   average_monthly_ads_investment varchar (255) null,
   created_on timestamp with time zone default current_timestamp
 );
