@@ -1,11 +1,12 @@
 {
   "name": "adfinance-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "## Setup ambiente desenvolvimento",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "pretest": "eslint --ignore-path .gitignore .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -13,17 +14,36 @@
   "dependencies": {
     "@sendgrid/mail": "^7.2.2",
     "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-validator": "^6.6.1",
+    "husky": "^4.3.0",
     "moip-sdk-node": "^1.2.4",
     "moment": "^2.27.0",
     "node-cron": "^2.0.3",
     "pg": "^8.3.0"
   },
   "devDependencies": {
+    "eslint": "^7.11.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.1",
     "git-commit-msg-linter": "^2.6.0",
     "nodemon": "^2.0.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/access55/adfinance-api.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/access55/adfinance-api/issues"
+  },
+  "homepage": "https://github.com/access55/adfinance-api#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run pretest"
+    }
   }
 }

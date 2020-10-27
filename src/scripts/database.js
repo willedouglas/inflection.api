@@ -1,15 +1,15 @@
 module.exports = `
 create table adfinance.account(
   id serial primary key,
-  first_name varchar (255) not null,
-  last_name  varchar (255) not null,
-  email varchar (255) not null,
-  phone varchar (11),
-  role varchar (50),
+  first_name varchar (255) null,
+  last_name varchar (255) null,
+  email varchar (255) null,
+  phone varchar (11) null,
+  role varchar (50) null,
   company_name varchar (255) not null,
   company_id varchar (14) not null,
-  website varchar (255),
-  monthly_gross_revenue decimal (11,2),
+  website varchar (255) null,
+  monthly_gross_revenue decimal (11,2) null,
   how_meet_us varchar (255) null,
   corporate_name varchar (255) null,
   company_category varchar (255) null,
@@ -19,6 +19,15 @@ create table adfinance.account(
   bankly_proxy varchar(25) null,
   bankly_activation_code varchar(18) null,
   bankly_account_number varchar(10) null,
+  average_monthly_ads_investment varchar (255) null,
+  created_on timestamp with time zone default current_timestamp
+);
+
+create table adfinance.uploads(
+  id serial primary key,
+  account_id integer references adfinance.account (id) not null,
+  path varchar (255) null,
+  method varchar (255) null,
   created_on timestamp with time zone default current_timestamp
 );
 
@@ -26,7 +35,7 @@ create table adfinance.advertising_account(
   id serial primary key,
   account_id integer references adfinance.account (id) not null,
   method varchar (50) not null,
-  name  varchar (255),
+  name varchar (255),
   email varchar (255),
   customer_account_id varchar (50),
   access_token varchar (255),
@@ -96,4 +105,4 @@ create table adfinance.payment_grouped(
   type integer not null,
   date date not null,
   created_on timestamp with time zone default current_timestamp
-);`
+);`;

@@ -1,5 +1,3 @@
-'use strict';
-
 const leadResource = require('../../resources/lead');
 
 const createLead = async (request, response) => {
@@ -12,8 +10,11 @@ const createLead = async (request, response) => {
     } = request.body;
 
     const name = `${firstname} ${lastname}`;
+    const product_id = 4;
 
-    await leadResource.createLead({ name, email, cnpj });
+    await leadResource.createLead({
+      name, email, cnpj, product_id,
+    });
 
     return response.status(201).json({
       status: 'created',
@@ -23,9 +24,9 @@ const createLead = async (request, response) => {
       status: 'error',
       description: e.message,
     });
-  };
+  }
 };
 
 module.exports = {
-  createLead
+  createLead,
 };

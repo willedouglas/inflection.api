@@ -1,7 +1,6 @@
 const { cardsVirtual, activateCard, cardByProxy, getPCIData, getTransactionsData } = require('../../resources/bankly');
 const { validationResult } = require('express-validator');
 
-
 exports.createPaymentCard = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

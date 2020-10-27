@@ -1,5 +1,3 @@
-'use strict';
-
 const dotenv = require('./dotenv');
 
 dotenv();
@@ -13,18 +11,17 @@ const whitelist = [
   'https://plataforma-staging.a55.tech',
 ];
 
-const isDev = () => {
-  return process.env.ENV === "development"
-}
+const isDev = process.env.ENV === 'development';
+const isStaging = process.env.ENV === 'staging';
 
 const origin = {
-  origin: (origin, callback) => {
-    if (whitelist.indexOf(origin) !== -1 || isDev()) {
-      callback(null, true)
+  origin: (url, callback) => {
+    if (whitelist.indexOf(url) !== -1 || isDev || isStaging) {
+      callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS.'))
+      callback(new Error('Not allowed by CORS.'));
     }
-  }
-}
+  },
+};
 
 module.exports = origin;

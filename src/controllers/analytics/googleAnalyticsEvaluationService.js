@@ -1,6 +1,6 @@
 module.exports = {
-  normalizeEvaluation: evaluation => evaluation.data.rows ?
-    evaluation.data.data.rows.map(row => ({
+  normalizeEvaluation: (evaluation) => (evaluation.data.rows
+    ? evaluation.data.data.rows.map((row) => ({
       date: row.dimensions[0],
       channelGroup: row.dimensions[1],
       metrics: {
@@ -8,6 +8,6 @@ module.exports = {
         goalCompletionsAll: row.metrics[0].values[1],
         goalConversionRateAll: row.metrics[0].values[2],
       },
-    })) :
-    [],
+    }))
+    : []),
 };

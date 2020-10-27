@@ -7,10 +7,10 @@ const GOOGLE_ERROR_STATUS = {
 };
 
 const FACEBOOK_ERROR_STATUS = {
-  100: "A conta informada não existe, não pode ser carregada devido a permissões ausentes ou não é compatível com esta operação.",
+  100: 'A conta informada não existe, não pode ser carregada devido a permissões ausentes ou não é compatível com esta operação.',
 };
 
 module.exports = {
-  handleGoogleErrors: errorStatus => GOOGLE_ERROR_STATUS[errorStatus] || DEFAULT_ERROR,
-  handleFacebookErrors: errorStatus => FACEBOOK_ERROR_STATUS[errorStatus] || DEFAULT_ERROR,
+  handleGoogleErrors: (errorStatus) => GOOGLE_ERROR_STATUS[errorStatus] || DEFAULT_ERROR,
+  handleFacebookErrors: (errorStatus) => FACEBOOK_ERROR_STATUS[errorStatus] || DEFAULT_ERROR,
 };

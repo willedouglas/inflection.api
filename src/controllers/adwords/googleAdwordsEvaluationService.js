@@ -1,6 +1,6 @@
 module.exports = {
-  normalizeEvaluation: evaluation =>
-    evaluation.data.results ? evaluation.data.results.map(evaluation => ({
+  normalizeEvaluation: (analysis) => (
+    analysis.data.results ? analysis.data.results.map((evaluation) => ({
       id: evaluation.campaign.id,
       name: evaluation.campaign.name,
       status: evaluation.campaign.status,
@@ -20,5 +20,5 @@ module.exports = {
         conversionsRate: evaluation.metrics.conversionsFromInteractionsRate,
         averageCpm: evaluation.metrics.averageCpm,
       },
-    })) : [],
+    })) : []),
 };

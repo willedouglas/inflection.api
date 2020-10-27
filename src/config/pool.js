@@ -1,7 +1,5 @@
-'use strict';
-
 const {
-  Pool
+  Pool,
 } = require('pg');
 const dotenv = require('./dotenv');
 

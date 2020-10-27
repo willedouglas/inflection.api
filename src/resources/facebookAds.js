@@ -10,5 +10,5 @@ module.exports = {
   getFaceInsights: ({ access_token, ad_account_id, fields }) => {
     const normalizedFields = fields.join(',');
     return apiHelper.get(`/act_${ad_account_id}/insights?access_token=${access_token}&fields=${normalizedFields}&level=ad`);
-  }
+  },
 };
