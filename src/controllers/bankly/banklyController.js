@@ -1,6 +1,4 @@
 const { validationResult } = require('express-validator');
-const registerModel = require('../../models/register/register');
-
 const {
   cardsVirtual, activateCard, cardByProxy, getPCIData, getTransactionsData,
 } = require('../../resources/bankly');
@@ -14,17 +12,16 @@ exports.createPaymentCard = async (req, res) => {
   const payload = {
     ...req.body,
     ...{
+      /*
+      bankAgency: process.env.BANKLY_AGENCY,
+      bankAccount: process.env.BANKLY_ACCOUNT,
+      */
       programId: 82,
     },
   };
 
   return cardsVirtual(req.token, payload)
-    .then(async (result) => {
-      await registerModel.updateBanklyData({
-        bankly_proxy: result.proxy,
-        bankly_activation_code: result.activateCode,
-        company_id: payload.documentNumber,
-      });
+    .then((result) => {
       res.json(result);
     })
     .catch((error) => {

@@ -236,36 +236,6 @@ const register = async ({
   }
 };
 
-const updateBanklyData = async ({
-  bankly_activation_code,
-  bankly_proxy,
-  company_id,
-}) => {
-  const client = await pool.connect();
-
-  try {
-    await client.query('BEGIN');
-
-    await client.query(`
-      UPDATE adfinance.account SET
-        bankly_activation_code = $1,
-        bankly_proxy = $2
-      WHERE company_id = $3`,
-    [
-      bankly_activation_code,
-      bankly_proxy,
-      company_id,
-    ]);
-
-    await client.query('COMMIT');
-  } catch (e) {
-    await client.query('ROLLBACK');
-    throw e;
-  } finally {
-    client.release();
-  }
-};
-
 const update = async ({
   how_meet_us,
   firstname,
@@ -529,7 +499,6 @@ const emailExists = async (email) => {
 
 module.exports = {
   register,
-  updateBanklyData,
   update,
   upload,
   uploads,
