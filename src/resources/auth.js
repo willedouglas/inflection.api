@@ -8,7 +8,7 @@ const apiHelper = ({
 }) => api({
   baseURL,
   headers: {
-    Authorization: `Token ${token}`,
+    Authorization: token,
   },
 });
 
