@@ -1,4 +1,4 @@
-const api = require('../helpers/api');
+const api = require('axios');
 
 // eslint-disable-next-line consistent-return
 const ensureAuthenticated = async (request, response, next) => {
