@@ -1,4 +1,5 @@
 const leadResource = require('../../resources/lead');
+const Product = require('../../enums/product');
 
 const createLead = async (request, response) => {
   try {
@@ -10,7 +11,7 @@ const createLead = async (request, response) => {
     } = request.body;
 
     const name = `${firstname} ${lastname}`;
-    const product_id = 4;
+    const product_id = Product.ADSFINANCE;
 
     await leadResource.createLead({
       name, email, cnpj, product_id,
