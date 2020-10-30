@@ -1,5 +1,7 @@
 const api = require('axios');
 
+const isProduction = process.env.ENV === 'production';
+
 // eslint-disable-next-line consistent-return
 const ensureAuthenticated = async (request, response, next) => {
   try {
@@ -16,10 +18,11 @@ const ensureAuthenticated = async (request, response, next) => {
       'content-type': 'application/json',
     };
 
+    const baseUrl = `${isProduction ? 'https://auth-api.a55.tech/api' : 'https://auth-api-staging.a55.tech/api'}`;
     const payload = '{"clearance":"a55::midgard::instrument::<cnpj>::read"}';
 
     const verifyToken = await api.post(
-      `${process.env.AUTH_API_URL}/clearedIds`,
+      `${baseUrl}/clearedIds`,
       payload,
       { headers },
     );
