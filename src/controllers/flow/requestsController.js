@@ -40,6 +40,7 @@ const getRequests = async (request, response) => {
       data: searchedRequests,
     });
   } catch (e) {
+    console.info(e);
     Sentry.captureException(e);
     const errorMessage = (e.response && e.response.data && e.response.data.detail) || 'Erro desconhecido, aguarde uns instantes e tente novamente.';
     return response.status(500).json({

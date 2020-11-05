@@ -1,3 +1,4 @@
+const Sentry = require('@sentry/node');
 const wirecard = require('../../resources/wirecard');
 const { begin, end } = require('../../../constants');
 const { normalizeStatements } = require('./wirecardService');
@@ -19,6 +20,8 @@ const getAuthorizeUrl = async (request, response) => {
       },
     });
   } catch (e) {
+    console.info(e);
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: e.message,
@@ -37,6 +40,8 @@ const getAuthorizeTransferUrl = async (request, response) => {
       },
     });
   } catch (e) {
+    console.info(e);
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: e.message,
@@ -74,6 +79,8 @@ const generateToken = async (request, response) => {
       },
     });
   } catch (e) {
+    console.info(e);
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: e.message,
@@ -111,6 +118,8 @@ const generateTokenTransfer = async (request, response) => {
       },
     });
   } catch (e) {
+    console.info(e);
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: e.message,
@@ -150,6 +159,8 @@ const setNewToken = async (request, response) => {
       status: 'created',
     });
   } catch (e) {
+    console.info(e);
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: e.message,
@@ -170,6 +181,8 @@ const setReadToken = async (request, response) => {
       status: 'created',
     });
   } catch (e) {
+    console.info(e);
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: e.message,
@@ -201,6 +214,8 @@ const getBalances = async (request, response) => {
       data,
     });
   } catch (e) {
+    console.info(e);
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: e.message,
@@ -234,6 +249,8 @@ const transferToWirecardAccount = async (request, response) => {
       data,
     });
   } catch (e) {
+    console.info(e);
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: e.message,
@@ -267,6 +284,8 @@ const transferToBankAccount = async (request, response) => {
       data,
     });
   } catch (e) {
+    console.info(e);
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: e.message,
@@ -294,6 +313,8 @@ const checkIsWirecard = async (request, response) => {
       data: access_token,
     });
   } catch (e) {
+    console.info(e);
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: e.message,

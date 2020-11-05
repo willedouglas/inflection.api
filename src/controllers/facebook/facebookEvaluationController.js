@@ -1,3 +1,4 @@
+const Sentry = require('@sentry/node');
 const facebookAds = require('../../resources/facebookAds');
 const {
   handleFacebookErrors,
@@ -49,6 +50,8 @@ const getUserAds = async (request, response) => {
       data: adAccounts.data.adaccounts.data,
     });
   } catch (e) {
+    console.info(e);
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: e.message,
@@ -89,6 +92,8 @@ const getFacebookInsights = async (request, response) => {
       data: normalizeInsights(insights.data.data),
     });
   } catch (e) {
+    console.info(e);
+    Sentry.captureException(e);
     const errorMessage = (e.response && e.response.data && e.response.data.error && e.response.data.error.code) || 'DEFAULT';
 
     return response.status(500).json({

@@ -1,3 +1,4 @@
+const Sentry = require('@sentry/node');
 const leadResource = require('../../resources/lead');
 const Product = require('../../enums/product');
 
@@ -21,6 +22,8 @@ const createLead = async (request, response) => {
       status: 'created',
     });
   } catch (e) {
+    console.info(e);
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: e.message,
