@@ -1,3 +1,4 @@
+const Sentry = require('@sentry/node');
 const adwords = require('../../resources/googleAdwords');
 const {
   handleGoogleErrors,
@@ -71,6 +72,8 @@ const googleAdwordsEvaluation = async (request, response) => {
       data: normalizeEvaluation(evaluation),
     });
   } catch (e) {
+    console.info(e);
+    Sentry.captureException(e);
     const errorMessage = (e.response && e.response.data && e.response.data.error && e.response.data.error.status) || 'DEFAULT';
 
     return response.status(500).json({
