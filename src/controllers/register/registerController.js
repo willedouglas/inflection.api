@@ -1,3 +1,4 @@
+const Sentry = require('@sentry/node');
 const authResource = require('../../resources/auth');
 const registerModel = require('../../models/register/register');
 const sendgridResource = require('../../resources/sendgrid');
@@ -63,6 +64,7 @@ const register = async (request, response) => {
       description: 'Este email já está sendo usado.',
     });
   } catch (e) {
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: e.message,
@@ -112,6 +114,7 @@ const update = async (request, response) => {
       status: 'updated',
     });
   } catch (e) {
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: e.message,
@@ -171,6 +174,7 @@ const clientProcess = async (request, response) => {
       status: 'uploaded',
     });
   } catch (e) {
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: e.message,
@@ -216,6 +220,7 @@ const uploads = async (request, response) => {
       data: searchedUploads,
     });
   } catch (e) {
+    Sentry.captureException(e);
     const errorMessage = (e.response && e.response.data && e.response.data.detail) || 'Erro desconhecido, aguarde uns instantes e tente novamente.';
     return response.status(500).json({
       status: 'error',
@@ -259,6 +264,7 @@ const adsEvaluation = async (request, response) => {
       status: 'created',
     });
   } catch (e) {
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: e.message,
@@ -304,6 +310,7 @@ const registerTemporary = async (request, response) => {
       status: 'created temporary',
     });
   } catch (e) {
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: e.message,
@@ -324,6 +331,7 @@ const emailIsAvailable = async (request, response) => {
       available: !emailExists,
     });
   } catch (e) {
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: e.message,
