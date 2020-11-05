@@ -1,5 +1,7 @@
+const Sentry = require('@sentry/node');
 const authResource = require('../../resources/auth');
 const requests = require('../../models/flow/requests');
+
 const {
   cleanString,
 } = require('../../helpers/format');
@@ -38,6 +40,7 @@ const getRequests = async (request, response) => {
       data: searchedRequests,
     });
   } catch (e) {
+    Sentry.captureException(e);
     const errorMessage = (e.response && e.response.data && e.response.data.detail) || 'Erro desconhecido, aguarde uns instantes e tente novamente.';
     return response.status(500).json({
       status: 'error',
