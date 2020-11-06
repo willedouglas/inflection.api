@@ -2,7 +2,6 @@ const express = require('express');
 
 const router = express.Router();
 const { authentication } = require('../middlewares/bankly');
-const { createCreditCard } = require('../helpers/validators');
 const googleAdwordsEvaluationController = require('../controllers/adwords/googleAdwordsEvaluationController');
 const googleAnalyticsEvaluationController = require('../controllers/analytics/googleAnalyticsEvaluationController');
 const registerController = require('../controllers/register/registerController');
@@ -43,7 +42,7 @@ router.post('/sendgrid/send/underanalysis', ensureAuthenticated, sendgridControl
 router.get('/facebook/campaigns/user', ensureAuthenticated, facebookEvaluationController.getUserAds);
 router.post('/facebook/campaigns/evaluation', ensureAuthenticated, facebookEvaluationController.getFacebookInsights);
 router.get('/flow/requests', ensureAuthenticated, requestsController.getRequests);
-router.post('/bankly/cards/virtual', createCreditCard, authentication, banklyController.createPaymentCard);
+router.post('/bankly/cards/virtual', authentication, banklyController.createPaymentCard);
 router.post('/bankly/cards/:proxy/activate', authentication, banklyController.activatePaymentCard);
 router.get('/bankly/cards/:proxy', authentication, banklyController.cardDetailsByProxy);
 router.post('/bankly/cards/:proxy/pci', authentication, banklyController.pci);
