@@ -1,4 +1,5 @@
 const dotenv = require('dotenv');
+const Sentry = require('@sentry/node');
 const api = require('../helpers/api');
 
 dotenv.config();
@@ -26,6 +27,8 @@ const getAccessToken = async () => {
 };
 
 const cardsVirtual = async (token, payload) => {
+  console.log('in cardsVirtual');
+  console.log(process.env.BANKLY_SANDBOX_URL);
   const authorizationHeader = { authorization: `Bearer ${token}` };
   const apiBankly = api({
     baseURL: process.env.BANKLY_SANDBOX_URL,
@@ -37,9 +40,12 @@ const cardsVirtual = async (token, payload) => {
 
   try {
     const result = await apiBankly.post('cards/virtual', payload);
+    console.log(result);
     const { data } = result;
     return data;
   } catch (error) {
+    console.info(error);
+    Sentry.captureException(error);
     return error.response.data;
   }
 };
