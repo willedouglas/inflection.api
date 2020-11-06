@@ -1,7 +1,7 @@
 const Sentry = require('@sentry/node');
 
 const {
-  cardsVirtual, activateCard, cardByProxy, getPCIData, getTransactionsData,
+  activateCard, cardByProxy, getPCIData, getTransactionsData,
 } = require('../../resources/bankly');
 
 exports.createPaymentCard = async (req, res) => {
@@ -16,16 +16,7 @@ exports.createPaymentCard = async (req, res) => {
     console.log('calls cardsVirtual');
     console.log(req.token);
     console.log(payload);
-    return cardsVirtual(req.token, payload)
-      .then((result) => {
-        console.log(result);
-        return res.json(result);
-      })
-      .catch((error) => {
-        console.info(error);
-        Sentry.captureException(error);
-        res.json(error);
-      });
+    return res.status(200).json(payload);
   } catch (e) {
     Sentry.captureException(e);
     return res.status(500).json({
