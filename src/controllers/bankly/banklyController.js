@@ -1,15 +1,11 @@
 const Sentry = require('@sentry/node');
-const { validationResult } = require('express-validator');
+
 const {
   cardsVirtual, activateCard, cardByProxy, getPCIData, getTransactionsData,
 } = require('../../resources/bankly');
 
 exports.createPaymentCard = async (req, res) => {
   console.log('createPaymentCard');
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
 
   const payload = {
     ...req.body,
