@@ -5,30 +5,33 @@ const {
 } = require('../../resources/bankly');
 
 exports.createPaymentCard = async (req, res) => {
-  console.log('createPaymentCard');
-
-  const payload = {
-    ...req.body,
-    ...{
-      /*
-      bankAgency: process.env.BANKLY_AGENCY,
-      bankAccount: process.env.BANKLY_ACCOUNT,
-      */
-      programId: 82,
-    },
-  };
-  console.log('calls cardsVirtual');
-  console.log(req.token);
-  console.log(payload);
-  return cardsVirtual(req.token, payload)
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((error) => {
-      console.info(error);
-      Sentry.captureException(error);
-      res.json(error);
+  try {
+    console.log('createPaymentCard');
+    const payload = {
+      ...req.body,
+      ...{
+        programId: 82,
+      },
+    };
+    console.log('calls cardsVirtual');
+    console.log(req.token);
+    console.log(payload);
+    return cardsVirtual(req.token, payload)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((error) => {
+        console.info(error);
+        Sentry.captureException(error);
+        res.json(error);
+      });
+  } catch (e) {
+    Sentry.captureException(e);
+    return res.status(500).json({
+      status: 'error',
+      description: e.message,
     });
+  }
 };
 
 exports.activatePaymentCard = async (req, res) => {
