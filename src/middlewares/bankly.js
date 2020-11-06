@@ -1,24 +1,27 @@
+const { URLSearchParams } = require('url');
+const axios = require('axios');
 const Sentry = require('@sentry/node');
 const dotenv = require('dotenv');
-const api = require('../helpers/api');
 
 dotenv.config();
 
 const authentication = async (req, res, next) => {
-  const apiHelper = api({
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded',
-    },
-  });
-  const params = new URLSearchParams();
-  params.append('grant_type', 'client_credentials');
-  params.append('client_id', process.env.BANKLY_CLIENT_ID);
-  params.append('client_secret', process.env.BANKLY_CLIENT_SECRET);
+  const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  };
+
+  const encodedParams = new URLSearchParams();
+  encodedParams.set('grant_type', 'client_credentials');
+  encodedParams.set('client_id', '5aacf84e-a854-42cd-9ab0-9e53100cd03e');
+  encodedParams.set('client_secret', '7bfbd970-c0b1-49da-85e7-a6a29f76e4b1');
+
+  const url = 'https://login.sandbox.bankly.com.br/connect/token';
 
   try {
-    const response = await apiHelper.post(
-      process.env.BANKLY_AUTH_SERVER_URL, params,
-    ).then((data) => data).catch();
+    const response = await axios.post(
+      url, encodedParams, { headers },
+    ).then((data) => data).catch((error) => console.log(error));
+    console.log(response);
     req.token = response.data.access_token.replace(/\r?\n|\r/g, '');
     return next();
   } catch (e) {
