@@ -1,4 +1,7 @@
+const dotenv = require('dotenv');
 const api = require('../helpers/api');
+
+dotenv.config();
 
 const commonHeaders = {
   accept: 'application/json',
