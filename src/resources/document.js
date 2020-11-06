@@ -3,9 +3,7 @@ const api = require('../helpers/api');
 const isProduction = process.env.ENV === 'production';
 
 const handleClientProcessError = (error) => {
-  if (
-    error.response.data && error.response.data.message.includes('already exists')
-  ) {
+  if (error.response.data && error.response.data.message && error.response.data.message.includes('already exists')) {
     return Promise.resolve();
   }
   return error;

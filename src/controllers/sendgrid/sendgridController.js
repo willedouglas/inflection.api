@@ -1,3 +1,4 @@
+const Sentry = require('@sentry/node');
 const sendgrid = require('../../resources/sendgrid');
 
 const sendConfirmationMail = async (request, response) => {
@@ -9,6 +10,8 @@ const sendConfirmationMail = async (request, response) => {
       description: 'E-mail enviado com sucesso!',
     });
   } catch (e) {
+    console.info(e);
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: 'Erro ao enviar o seu e-mail, tente novamente mais tarde.',
@@ -53,6 +56,8 @@ const sendNotificationMail = async (request, response) => {
       description: 'E-mail enviado à A55 com sucesso!',
     });
   } catch (e) {
+    console.info(e);
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: 'Erro ao enviar o seu e-mail para A55, tente novamente mais tarde.',
@@ -90,6 +95,8 @@ const sendAbandonmentMail = async (request, response) => {
       description: 'E-mail enviado com sucesso!',
     });
   } catch (e) {
+    console.info(e);
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: 'Erro ao enviar o seu e-mail, tente novamente mais tarde.',
@@ -127,6 +134,8 @@ const sendDataMissingMail = async (request, response) => {
       description: 'E-mail enviado com sucesso!',
     });
   } catch (e) {
+    console.info(e);
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: 'Erro ao enviar o seu e-mail, tente novamente mais tarde.',
@@ -161,6 +170,8 @@ const sendUnderAnalysisMail = async (request, response) => {
       description: 'E-mail enviado com sucesso!',
     });
   } catch (e) {
+    console.info(e);
+    Sentry.captureException(e);
     return response.status(500).json({
       status: 'error',
       description: 'Erro ao enviar o seu e-mail, tente novamente mais tarde.',
