@@ -1,5 +1,7 @@
+const dotenv = require('dotenv');
 const api = require('axios');
 
+dotenv.config();
 const isProduction = process.env.ENV === 'production';
 
 // eslint-disable-next-line consistent-return

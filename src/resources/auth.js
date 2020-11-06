@@ -1,5 +1,7 @@
+const dotenv = require('dotenv');
 const api = require('../helpers/api');
 
+dotenv.config();
 const isProduction = process.env.ENV === 'production';
 const baseURL = `${isProduction ? 'https://auth-api.a55.tech/api' : 'https://auth-api-staging.a55.tech/api'}`;
 
