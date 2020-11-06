@@ -14,7 +14,7 @@ Sentry.init({
   debug: true,
   environment: process.env.NODE_ENV,
   release: '0.0.1',
-  dsn: process.env.ADSFINANCE_SENTRY_DSN,
+  dsn: 'https://8d50d40b277e468680a5be79081f7072@o290375.ingest.sentry.io/5493930',
 });
 app.use(Sentry.Handlers.requestHandler());
 app.use(
