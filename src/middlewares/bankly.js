@@ -21,7 +21,6 @@ const authentication = async (req, res, next) => {
     const response = await axios.post(
       url, encodedParams, { headers },
     ).then((data) => data).catch((error) => console.log(error));
-    console.log(response);
     req.token = response.data.access_token.replace(/\r?\n|\r/g, '');
     return next();
   } catch (e) {
