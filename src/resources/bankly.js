@@ -27,22 +27,28 @@ const getAccessToken = async () => {
 };
 
 const cardsVirtual = async (token, payload) => {
-  console.log('in cardsVirtual');
-  console.log(process.env.BANKLY_SANDBOX_URL);
-  const authorizationHeader = { authorization: `Bearer ${token}` };
-  const apiBankly = api({
-    baseURL: process.env.BANKLY_SANDBOX_URL,
-    headers: {
-      ...commonHeaders,
-      ...authorizationHeader,
-    },
-  });
-
   try {
-    const result = await apiBankly.post('cards/virtual', payload);
-    console.log(result);
-    const { data } = result;
-    return data;
+    console.log('in cardsVirtual');
+    console.log(process.env.BANKLY_SANDBOX_URL);
+    const authorizationHeader = { authorization: `Bearer ${token}` };
+    const apiBankly = api({
+      baseURL: process.env.BANKLY_SANDBOX_URL,
+      headers: {
+        ...commonHeaders,
+        ...authorizationHeader,
+      },
+    });
+    await apiBankly.post('cards/virtual', payload)
+      .then((response) => {
+        console.log(response);
+        const { data } = response;
+        return data;
+      })
+      .catch((error) => {
+        console.info(error);
+        Sentry.captureException(error);
+      });
+    return true;
   } catch (error) {
     console.info(error);
     Sentry.captureException(error);
