@@ -38,17 +38,12 @@ const cardsVirtual = async (token, payload) => {
         ...authorizationHeader,
       },
     });
-    await apiBankly.post('cards/virtual', payload)
-      .then((response) => {
-        console.log(response);
-        const { data } = response;
-        return data;
-      })
+    return await apiBankly.post('cards/virtual', payload)
+      .then((data) => (data))
       .catch((error) => {
         console.info(error);
         Sentry.captureException(error);
       });
-    return true;
   } catch (error) {
     console.info(error);
     Sentry.captureException(error);

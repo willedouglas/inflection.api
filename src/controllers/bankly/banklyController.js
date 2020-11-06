@@ -18,7 +18,8 @@ exports.createPaymentCard = async (req, res) => {
     console.log(payload);
     return cardsVirtual(req.token, payload)
       .then((result) => {
-        res.json(result);
+        console.log(result);
+        return res.json(result);
       })
       .catch((error) => {
         console.info(error);
