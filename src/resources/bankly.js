@@ -6,8 +6,8 @@ const api = require('../helpers/api');
 dotenv.config();
 
 const commonHeaders = {
-  accept: 'application/json',
-  'content-type': 'application/json',
+  Accept: 'application/json',
+  'Content-Type': 'application/json',
   'api-version': process.env.BANKLY_API_VERSION,
 };
 
@@ -28,25 +28,17 @@ const getAccessToken = async () => {
 };
 
 const cardsVirtual = async (token, payload) => {
+  console.log('in cardsVirtual');
   try {
-    console.log('in cardsVirtual');
-    console.log(process.env.BANKLY_SANDBOX_URL);
     const headers = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      'api-version': process.env.BANKLY_API_VERSION,
+      ...commonHeaders,
       Authorization: `Bearer ${token}`,
     };
-    return await axios.post(`${process.env.BANKLY_SANDBOX_URL}/cards/virtual`, payload, { headers })
-      .then((data) => (data))
-      .catch((error) => {
-        console.info(error);
-        Sentry.captureException(error);
-      });
+    return await axios.post(`${process.env.BANKLY_SANDBOX_URL}/cards/virtual`, payload, { headers });
   } catch (error) {
     console.info(error);
     Sentry.captureException(error);
-    return error.response.data;
+    return error.response;
   }
 };
 
