@@ -16,9 +16,6 @@ create table adfinance.account(
   company_zip varchar (10) null,
   company_address_number varchar (255) null,
   average_monthly_ads_investment varchar (255) not null,
-  bankly_proxy varchar(25) null,
-  bankly_activation_code varchar(18) null,
-  bankly_account_number varchar(10) null,
   average_monthly_ads_investment varchar (255) null,
   created_on timestamp with time zone default current_timestamp
 );
@@ -106,6 +103,15 @@ create table adfinance.payment_grouped(
   date date not null,
   created_on timestamp with time zone default current_timestamp
 );
+
+create table adfinance.bankly_account(
+  id serial primary key,
+  account_id integer references adfinance.account (id) not null,
+  proxy varchar(25) null,
+  activate_code varchar(18) null,
+  account_number varchar(10) null,
+  created_on timestamp with time zone default current_timestamp
+)
 
 alter table adfinance.uploads
 drop constraint uploads_account_id_fkey;
