@@ -13,15 +13,12 @@ exports.createPaymentCard = async (req, res) => {
         programId: 82,
       },
     };
-    console.log('calls cardsVirtual');
-    console.log(req.token);
-    console.log(payload);
     const response = await cardsVirtual(req.token, payload)
       .then((result) => result)
       .catch((error) => {
         res.json(error);
       });
-    return res.status(200).json(response);
+    return res.status(response.status).json(response.data);
   } catch (e) {
     Sentry.captureException(e);
     return res.status(500).json({
