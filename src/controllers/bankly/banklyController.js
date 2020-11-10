@@ -6,6 +6,21 @@ const {
   cardsVirtual, activateCard, cardByProxy, getPCIData, getTransactionsData,
 } = require('../../resources/bankly');
 
+exports.getCard = async (req, res) => {
+  try {
+    const { company_id } = req.params;
+    const account = await requests({ company_id });
+    const card = await BanklyCard.getCard({ account_id: account[0].id });
+    return res.status(200).json(card);
+  } catch (e) {
+    Sentry.captureException(e);
+    return res.status(500).json({
+      status: 'error',
+      description: e.message,
+    });
+  }
+};
+
 exports.createPaymentCard = async (req, res) => {
   try {
     console.log('createPaymentCard');

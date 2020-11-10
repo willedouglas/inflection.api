@@ -43,6 +43,7 @@ router.get('/facebook/campaigns/user', ensureAuthenticated, facebookEvaluationCo
 router.post('/facebook/campaigns/evaluation', ensureAuthenticated, facebookEvaluationController.getFacebookInsights);
 router.get('/flow/requests', ensureAuthenticated, requestsController.getRequests);
 router.post('/bankly/cards/virtual', authentication, banklyController.createPaymentCard);
+router.get('/bankly/cards/virtual/:company_id', authentication, banklyController.getCard);
 router.post('/bankly/cards/:proxy/activate', authentication, banklyController.activatePaymentCard);
 router.get('/bankly/cards/:proxy', authentication, banklyController.cardDetailsByProxy);
 router.post('/bankly/cards/:proxy/pci', authentication, banklyController.pci);
