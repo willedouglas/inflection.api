@@ -23,7 +23,6 @@ exports.getCard = async (req, res) => {
 
 exports.createPaymentCard = async (req, res) => {
   try {
-    console.log('createPaymentCard');
     const payload = {
       ...req.body,
       ...{

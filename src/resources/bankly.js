@@ -28,7 +28,6 @@ const getAccessToken = async () => {
 };
 
 const cardsVirtual = async (token, payload) => {
-  console.log('in cardsVirtual');
   try {
     const headers = {
       ...commonHeaders,
