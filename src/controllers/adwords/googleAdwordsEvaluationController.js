@@ -85,7 +85,7 @@ const googleAdwordsEvaluation = async (request, response) => {
           method: METHOD,
           access_token,
           customer_account_id: cleanString(customer_account_id),
-          evaluation,
+          evaluation: normalizeEvaluation(evaluation),
         },
       });
 

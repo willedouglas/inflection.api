@@ -108,7 +108,7 @@ const getFacebookInsights = async (request, response) => {
           method: METHOD,
           access_token,
           customer_account_id: cleanString(ad_account_id),
-          evaluation: insights,
+          evaluation: normalizeInsights(insights.data.data),
         },
       });
 
