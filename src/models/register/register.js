@@ -1,5 +1,3 @@
-const Sentry = require('@sentry/node');
-
 const pool = require('../../config/pool');
 
 const register = async ({
@@ -231,7 +229,6 @@ const register = async ({
 
     await client.query('COMMIT');
   } catch (e) {
-    Sentry.captureException(e);
     await client.query('ROLLBACK');
     throw e;
   } finally {
@@ -298,7 +295,6 @@ const update = async ({
 
     await client.query('COMMIT');
   } catch (e) {
-    Sentry.captureException(e);
     await client.query('ROLLBACK');
     throw e;
   } finally {
@@ -342,7 +338,6 @@ const upload = async ({
 
     await client.query('COMMIT');
   } catch (e) {
-    Sentry.captureException(e);
     await client.query('ROLLBACK');
     throw e;
   } finally {
@@ -454,7 +449,6 @@ const adsEvaluation = async ({ company_id, ads }) => {
 
     await client.query('COMMIT');
   } catch (e) {
-    Sentry.captureException(e);
     await client.query('ROLLBACK');
     throw e;
   } finally {
@@ -482,7 +476,6 @@ const registerTemporaryAccount = async ({
 
     await client.query('COMMIT');
   } catch (e) {
-    Sentry.captureException(e);
     await client.query('ROLLBACK');
     throw e;
   } finally {

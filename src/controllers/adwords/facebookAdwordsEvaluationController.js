@@ -1,11 +1,15 @@
 const Sentry = require('@sentry/node');
 const facebookAds = require('../../resources/facebookAds');
+const registerModel = require('../../models/register/register');
 const {
   handleFacebookErrors,
 } = require('../../helpers/errors');
 const {
   normalizeInsights,
-} = require('./facebookEvaluationService');
+} = require('./facebookAdwordsEvaluationService');
+const {
+  cleanString,
+} = require('../../helpers/format');
 
 const fields = [
   'campaign_id',
@@ -62,8 +66,10 @@ const getUserAds = async (request, response) => {
 const getFacebookInsights = async (request, response) => {
   try {
     const {
+      company_id,
       access_token,
       ad_account_id,
+      is_save,
     } = request.body;
 
     if (!access_token) {
@@ -85,6 +91,36 @@ const getFacebookInsights = async (request, response) => {
       ad_account_id,
       fields,
     });
+
+    if (is_save) {
+      const METHOD = 'FACEBOOK_ADS';
+
+      if (!company_id) {
+        return response.status(400).json({
+          status: 'error',
+          description: 'Identificador da empresa não encontrado.',
+        });
+      }
+
+      await registerModel.adsEvaluation({
+        company_id: cleanString(company_id),
+        ads: {
+          method: METHOD,
+          access_token,
+          customer_account_id: cleanString(ad_account_id),
+          evaluation: insights,
+        },
+      });
+
+      await registerModel.upload({
+        company_id,
+        method: METHOD,
+      });
+
+      return response.status(200).json({
+        status: 'success',
+      });
+    }
 
     return response.status(200).json({
       status: 'success',

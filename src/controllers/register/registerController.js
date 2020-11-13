@@ -229,49 +229,6 @@ const uploads = async (request, response) => {
   }
 };
 
-const adsEvaluation = async (request, response) => {
-  try {
-    const {
-      ads,
-    } = request.body;
-
-    let {
-      company_id,
-    } = request.body;
-
-    company_id = cleanString(company_id);
-
-    if (!company_id) {
-      return response.status(400).json({
-        status: 'error',
-        description: 'Identificador da empresa não informado.',
-      });
-    }
-
-    if (!ads) {
-      return response.status(400).json({
-        status: 'error',
-        description: 'Dados de avaliação da campanha não informado.',
-      });
-    }
-
-    await registerModel.adsEvaluation({
-      company_id,
-      ads,
-    });
-
-    return response.status(201).json({
-      status: 'created',
-    });
-  } catch (e) {
-    Sentry.captureException(e);
-    return response.status(500).json({
-      status: 'error',
-      description: e.message,
-    });
-  }
-};
-
 const registerTemporary = async (request, response) => {
   try {
     const {
@@ -345,6 +302,5 @@ module.exports = {
   uploads,
   clientProcess,
   registerTemporary,
-  adsEvaluation,
   emailIsAvailable,
 };

@@ -1,5 +1,6 @@
 const Sentry = require('@sentry/node');
 const adwords = require('../../resources/googleAdwords');
+const registerModel = require('../../models/register/register');
 const {
   handleGoogleErrors,
 } = require('../../helpers/errors');
@@ -19,7 +20,9 @@ const googleAdwordsEvaluation = async (request, response) => {
   try {
     const {
       access_token,
+      company_id,
       customer_account_id,
+      is_save,
     } = request.body;
 
     if (!access_token) {
@@ -65,6 +68,36 @@ const googleAdwordsEvaluation = async (request, response) => {
       customer_account_id: cleanString(customer_account_id),
       query: removeSpaces(query),
     });
+
+    if (is_save) {
+      const METHOD = 'GOOGLE_ADS';
+
+      if (!company_id) {
+        return response.status(400).json({
+          status: 'error',
+          description: 'Identificador da empresa não encontrado.',
+        });
+      }
+
+      await registerModel.adsEvaluation({
+        company_id: cleanString(company_id),
+        ads: {
+          method: METHOD,
+          access_token,
+          customer_account_id: cleanString(customer_account_id),
+          evaluation,
+        },
+      });
+
+      await registerModel.upload({
+        company_id,
+        method: METHOD,
+      });
+
+      return response.status(200).json({
+        status: 'success',
+      });
+    }
 
     return response.status(200).json({
       status: 'success',
