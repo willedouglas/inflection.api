@@ -90,7 +90,7 @@ const googleAdwordsEvaluation = async (request, response) => {
       });
 
       await registerModel.upload({
-        company_id,
+        company_id: cleanString(company_id),
         method: METHOD,
       });
 
