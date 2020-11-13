@@ -5,6 +5,7 @@ const getToday = () => {
 
 module.exports = {
   normalizeInsights: (insights) => (insights ? insights.map((insight) => ({
+    id: insight.campaign_id,
     name: insight.campaign_name,
     status: 'N/A',
     type: 'N/A',
