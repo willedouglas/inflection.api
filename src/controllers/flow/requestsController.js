@@ -1,5 +1,5 @@
 const Sentry = require('@sentry/node');
-const authResource = require('../../resources/auth');
+// const authResource = require('../../resources/auth');
 const requests = require('../../models/flow/requests');
 
 const {
@@ -29,7 +29,7 @@ const getRequests = async (request, response) => {
       });
     }
 
-    await authResource.getClearance({ token, company_id });
+    // await authResource.getClearance({ token, company_id });
 
     const searchedRequests = await requests({
       company_id,
