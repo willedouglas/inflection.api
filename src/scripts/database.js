@@ -170,4 +170,7 @@ add constraint payment_grouped_payment_account_id_fkey
   on delete cascade on update no action;
 
 alter table adfinance.account
-add constraint email_unique unique (email);`;
+add constraint email_unique unique (email);
+
+alter table adfinance.account
+add ads_integration_status varchar(255);`;
