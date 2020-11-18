@@ -497,6 +497,26 @@ const emailExists = async (email) => {
   }
 };
 
+const updateIntegrationStatus = async ({ company_id, ads_integration_status }) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const result = await client.query(`
+      UPDATE adfinance.account SET
+        ads_integration_status = $1
+      WHERE company_id = $2`, [
+      ads_integration_status, company_id,
+    ]);
+    await client.query('COMMIT');
+    return result;
+  } catch (e) {
+    await client.query('ROLLBACK');
+    throw e;
+  } finally {
+    client.release();
+  }
+};
+
 module.exports = {
   register,
   update,
@@ -505,4 +525,5 @@ module.exports = {
   adsEvaluation,
   registerTemporaryAccount,
   emailExists,
+  updateIntegrationStatus,
 };
