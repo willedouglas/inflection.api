@@ -11,6 +11,7 @@ const sendgridController = require('../controllers/sendgrid/sendgridController')
 const requestsController = require('../controllers/flow/requestsController');
 const leadsController = require('../controllers/flow/leadsController');
 const banklyController = require('../controllers/bankly/banklyController');
+const integrationController = require('../controllers/flow/integrationController');
 const { ensureAuthenticated } = require('../middlewares/ensureAuthenticated');
 
 router.post('/register', ensureAuthenticated, registerController.register);
@@ -21,6 +22,7 @@ router.get('/email/available', ensureAuthenticated, registerController.emailIsAv
 router.post('/leads', ensureAuthenticated, leadsController.createLead);
 router.get('/flow/requests', ensureAuthenticated, requestsController.getRequests);
 router.post('/register/temporary', ensureAuthenticated, registerController.registerTemporary);
+router.post('/integration/status/:company_id', ensureAuthenticated, integrationController.updateStatus);
 /* GOOGLE | FACEBOOK INTEGRATIONS */
 router.post('/google/campaigns/evaluation', ensureAuthenticated, googleAdwordsEvaluationController.googleAdwordsEvaluation);
 router.post('/google/analytics/evaluation', ensureAuthenticated, googleAnalyticsEvaluationController.googleAnalyticsEvaluation);
