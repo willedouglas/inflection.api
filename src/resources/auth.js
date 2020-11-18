@@ -1,26 +1,25 @@
+const Sentry = require('@sentry/node');
 const dotenv = require('dotenv');
-const api = require('../helpers/api');
+const axios = require('axios');
 
 dotenv.config();
-const isProduction = process.env.ENV === 'production';
-const baseURL = `${isProduction ? 'https://auth-api.a55.tech/api' : 'https://auth-api-staging.a55.tech/api'}`;
 
-const apiHelper = ({
+const getClearance = async ({
   token,
-}) => api({
-  baseURL,
-  headers: {
-    Authorization: token,
-  },
-});
+  company_id,
+}) => {
+  try {
+    await axios.post(`${process.env.AUTH_API_URL}/api/clearance`, {
+      clearance: `a55::midgard::client::${company_id}::read`,
+    }, {
+      headers: { Authorization: token },
+    });
+  } catch (e) {
+    console.info(e);
+    Sentry.captureException(e);
+  }
+};
 
 module.exports = {
-  getClearance: ({
-    token,
-    company_id,
-  }) => apiHelper({
-    token,
-  }).post('/clearance', {
-    clearance: `a55::midgard::client::${company_id}::read`,
-  }),
+  getClearance,
 };
