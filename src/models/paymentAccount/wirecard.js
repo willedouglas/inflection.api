@@ -27,7 +27,7 @@ const getAccessToken = async ({
       AND
         pa.access_token is not null`, [company_id]);
 
-    const { access_token } = paymentData.rows[0];
+    const { access_token } = paymentData.rows[0] || {};
 
     await client.query('COMMIT');
 
