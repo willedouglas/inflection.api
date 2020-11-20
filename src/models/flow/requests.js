@@ -1,3 +1,4 @@
+const Sentry = require('@sentry/node');
 const pool = require('../../config/pool');
 
 const requests = async ({
@@ -14,6 +15,7 @@ const requests = async ({
 
     return selectRequests.rows;
   } catch (e) {
+    Sentry.captureException(e);
     await client.query('ROLLBACK');
     throw e;
   } finally {
