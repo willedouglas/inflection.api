@@ -32,22 +32,23 @@ exports.createPaymentCard = async (req, res) => {
       },
     };
 
-    const response = await cardsVirtual(req.token, payload)
-      .then((result) => (result))
-      .catch((error) => {
-        res.json(error);
-      });
+    const response = await cardsVirtual(req.token, payload);
+
     if (response.status === 202) {
       const account = await requests({ company_id: req.body.documentNumber });
+
       const banklyAccount = {
         account_id: account[0].id,
         proxy: response.data.proxy,
         activate_code: response.data.activateCode,
         account_number: payload.bankAccount,
       };
+
       await BanklyCard.insertVirtualCard(banklyAccount);
+
       return res.status(response.status).json(banklyAccount);
     }
+
     return res.status(response.status).json(response.data);
   } catch (e) {
     Sentry.captureException(e);
