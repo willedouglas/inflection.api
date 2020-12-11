@@ -33,7 +33,7 @@ const cardsVirtual = async (token, payload) => {
       ...commonHeaders,
       Authorization: `Bearer ${token}`,
     };
-    return await axios.post(`${process.env.BANKLY_SANDBOX_URL}/cards/virtual`, payload, { headers });
+    return await axios.post(`${process.env.BANKLY_API_URL}/cards/virtual`, payload, { headers });
   } catch (error) {
     console.info(error);
     Sentry.captureException(error);
@@ -44,7 +44,7 @@ const cardsVirtual = async (token, payload) => {
 const activateCard = async (token, payload, proxy) => {
   const authorizationHeader = { authorization: `Bearer ${token}` };
   const apiBankly = api({
-    baseURL: process.env.BANKLY_SANDBOX_URL,
+    baseURL: process.env.BANKLY_API_URL,
     headers: {
       ...commonHeaders,
       ...authorizationHeader,
@@ -63,7 +63,7 @@ const activateCard = async (token, payload, proxy) => {
 const cardByProxy = async (token, proxy) => {
   const authorizationHeader = { authorization: `Bearer ${token}` };
   const apiBankly = api({
-    baseURL: process.env.BANKLY_SANDBOX_URL,
+    baseURL: process.env.BANKLY_API_URL,
     headers: {
       ...commonHeaders,
       ...authorizationHeader,
@@ -82,7 +82,7 @@ const cardByProxy = async (token, proxy) => {
 const getPCIData = async (token, payload, proxy) => {
   const authorizationHeader = { authorization: `Bearer ${token}` };
   const apiBankly = api({
-    baseURL: process.env.BANKLY_SANDBOX_URL,
+    baseURL: process.env.BANKLY_API_URL,
     headers: {
       ...commonHeaders,
       ...authorizationHeader,
@@ -101,7 +101,7 @@ const getPCIData = async (token, payload, proxy) => {
 const getTransactionsData = async (token, proxy) => {
   const authorizationHeader = { authorization: `Bearer ${token}` };
   const apiBankly = api({
-    baseURL: process.env.BANKLY_SANDBOX_URL,
+    baseURL: process.env.BANKLY_API_URL,
     headers: {
       ...commonHeaders,
       ...authorizationHeader,
