@@ -6,6 +6,8 @@ const {
   cardsVirtual, activateCard, cardByProxy, getPCIData, getTransactionsData,
 } = require('../../resources/bankly');
 
+const isProduction = process.env.ENV === 'production';
+
 exports.getCard = async (req, res) => {
   try {
     const { company_id } = req.params;
@@ -26,7 +28,7 @@ exports.createPaymentCard = async (req, res) => {
     const payload = {
       ...req.body,
       ...{
-        programId: 82,
+        programId: isProduction ? 29 : 82,
       },
     };
 
