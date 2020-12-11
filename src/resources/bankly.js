@@ -12,18 +12,30 @@ const commonHeaders = {
 };
 
 const getAccessToken = async () => {
-  const apiHelper = api({
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded',
-    },
-  });
-  const params = new URLSearchParams();
-  params.append('grant_type', 'client_credentials');
-  params.append('client_id', process.env.BANKLY_CLIENT_ID);
-  params.append('client_secret', process.env.BANKLY_CLIENT_SECRET);
+  try {
+    const apiHelper = api({
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    });
+    const params = new URLSearchParams();
+    params.append('grant_type', 'client_credentials');
+    params.append('client_id', process.env.BANKLY_CLIENT_ID);
+    params.append('client_secret', process.env.BANKLY_CLIENT_SECRET);
 
-  const response = await apiHelper.post(`${process.env.BANKLY_AUTH_SERVER_URL}/connect/token`, params);
-  return response.data.access_token;
+    console.log(process.env.BANKLY_AUTH_SERVER_URL);
+
+    const response = await apiHelper.post(`${process.env.BANKLY_AUTH_SERVER_URL}/connect/token`, params);
+
+    console.log(response.data);
+
+    return response.data.access_token;
+  } catch (error) {
+    console.log(error);
+    console.info(error);
+    Sentry.captureException(error);
+    return error.response;
+  }
 };
 
 const cardsVirtual = async (token, payload) => {
@@ -34,6 +46,7 @@ const cardsVirtual = async (token, payload) => {
     };
     return await axios.post(`${process.env.BANKLY_API_URL}/cards/virtual`, payload, { headers });
   } catch (error) {
+    console.log(error);
     console.info(error);
     Sentry.captureException(error);
     return error.response;
