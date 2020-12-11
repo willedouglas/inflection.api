@@ -29,7 +29,7 @@ const getAccessToken = async () => {
   } catch (error) {
     console.info(error);
     Sentry.captureException(error);
-    return error.response;
+    return error;
   }
 };
 

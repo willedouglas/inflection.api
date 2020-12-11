@@ -24,9 +24,12 @@ exports.getCard = async (req, res) => {
 };
 
 exports.createPaymentCard = async (req, res) => {
+  const normalizeCardName = (cardName) => cardName.replace(/[0-9]/g, '').slice(0, 19);
+
   try {
     const payload = {
       ...req.body,
+      cardName: normalizeCardName(req.body.cardName),
       ...{
         programId: isProduction ? 29 : 82,
       },
