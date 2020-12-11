@@ -12,7 +12,6 @@ const commonHeaders = {
 };
 
 const getAccessToken = async () => {
-  const authServerUrl = process.env.BANKLY_AUTH_SERVER_URL;
   const apiHelper = api({
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
@@ -23,7 +22,7 @@ const getAccessToken = async () => {
   params.append('client_id', process.env.BANKLY_CLIENT_ID);
   params.append('client_secret', process.env.BANKLY_CLIENT_SECRET);
 
-  const response = await apiHelper.post(authServerUrl, params);
+  const response = await apiHelper.post(`${process.env.BANKLY_AUTH_SERVER_URL}/connect/token`, params);
   return response.data.access_token;
 };
 
