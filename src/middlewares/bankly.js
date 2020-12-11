@@ -10,24 +10,20 @@ const authentication = async (req, res, next) => {
     'Content-Type': 'application/x-www-form-urlencoded',
   };
 
-  const encodedParams = new URLSearchParams();
-  encodedParams.set('grant_type', 'client_credentials');
-  encodedParams.set('client_id', '5aacf84e-a854-42cd-9ab0-9e53100cd03e');
-  encodedParams.set('client_secret', '7bfbd970-c0b1-49da-85e7-a6a29f76e4b1');
-
-  const url = 'https://login.sandbox.bankly.com.br/connect/token';
+  const params = new URLSearchParams();
+  params.append('grant_type', 'client_credentials');
+  params.append('client_id', process.env.BANKLY_CLIENT_ID);
+  params.append('client_secret', process.env.BANKLY_CLIENT_SECRET);
 
   try {
-    const response = await axios.post(
-      url, encodedParams, { headers },
-    ).then((data) => data).catch((error) => console.log(error));
+    const response = await axios.post(`${process.env.BANKLY_AUTH_SERVER_URL}/connect/token`, params, { headers });
     req.token = response.data.access_token.replace(/\r?\n|\r/g, '');
     return next();
-  } catch (e) {
-    Sentry.captureException(e);
+  } catch (error) {
+    Sentry.captureException(error);
     return res.status(500).json({
       status: 'error',
-      description: e.message,
+      description: error.message,
     });
   }
 };

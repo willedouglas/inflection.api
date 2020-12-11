@@ -23,15 +23,10 @@ const getAccessToken = async () => {
     params.append('client_id', process.env.BANKLY_CLIENT_ID);
     params.append('client_secret', process.env.BANKLY_CLIENT_SECRET);
 
-    console.log(process.env.BANKLY_AUTH_SERVER_URL);
-
     const response = await apiHelper.post(`${process.env.BANKLY_AUTH_SERVER_URL}/connect/token`, params);
-
-    console.log(response.data);
 
     return response.data.access_token;
   } catch (error) {
-    console.log(error);
     console.info(error);
     Sentry.captureException(error);
     return error.response;
