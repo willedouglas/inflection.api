@@ -1,9 +1,0 @@
-version: "3"
-
-services:
-  api:
-    image: 171725326846.dkr.ecr.us-east-1.amazonaws.com/adfinance-api:latest
-    command: sh ./entrypoint.sh
-    restart: always
-    ports:
-      - "3335:3333"

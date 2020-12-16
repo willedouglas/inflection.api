@@ -3,12 +3,7 @@ const dotenv = require('./dotenv');
 dotenv();
 
 const whitelist = [
-  'https://adfinance-register.a55.tech',
-  'https://adfinance-register-staging.a55.tech',
-  'https://localhost:8081',
-  'https://plataforma.a55.local:8080',
-  'https://plataforma.a55.tech',
-  'https://plataforma-staging.a55.tech',
+  'http://localhost:8080',
 ];
 
 const isDev = process.env.ENV === 'development';
